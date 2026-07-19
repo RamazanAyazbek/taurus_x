@@ -1,0 +1,836 @@
+[2026-07-18 11:58:57,259] INFO: Модуль Open Interest успешно инициализирован и запущен.
+[2026-07-18 11:58:57,259] INFO: Кэш истории пуст или недостаточен. Запрос истории из API Binance...
+[2026-07-18 11:58:58,038] INFO: Успешно синхронизировано 720 точек истории.
+[2026-07-18 11:58:58,038] INFO: [OI] Проверка рынка...
+[2026-07-18 12:13:59,204] INFO: [OI] Проверка рынка...
+[2026-07-18 12:29:00,482] INFO: [OI] Проверка рынка...
+[2026-07-18 12:44:01,731] INFO: [OI] Проверка рынка...
+[2026-07-18 12:59:03,599] INFO: [OI] Проверка рынка...
+[2026-07-18 13:14:04,916] INFO: [OI] Проверка рынка...
+[2026-07-18 13:29:06,782] INFO: [OI] Проверка рынка...
+[2026-07-18 13:44:08,050] INFO: [OI] Проверка рынка...
+[2026-07-18 13:59:09,436] INFO: [OI] Проверка рынка...
+[2026-07-18 15:06:22,055] INFO: [OI] Проверка рынка...
+[2026-07-18 15:21:23,408] INFO: [OI] Проверка рынка...
+[2026-07-18 15:36:24,744] INFO: [OI] Проверка рынка...
+[2026-07-18 15:51:26,210] INFO: [OI] Проверка рынка...
+[2026-07-18 16:06:27,627] INFO: [OI] Проверка рынка...
+[2026-07-18 17:00:19,612] INFO: [OI] Проверка рынка...
+[2026-07-18 17:15:21,284] INFO: [OI] Проверка рынка...
+[2026-07-18 17:30:22,562] INFO: [OI] Проверка рынка...
+[2026-07-18 17:45:24,058] INFO: [OI] Проверка рынка...
+[2026-07-18 18:40:04,048] INFO: [OI] Проверка рынка...
+[2026-07-18 18:55:05,532] INFO: [OI] Проверка рынка...
+[2026-07-18 19:10:06,969] INFO: [OI] Проверка рынка...
+[2026-07-18 19:25:08,502] INFO: [OI] Проверка рынка...
+[2026-07-18 19:40:09,963] INFO: [OI] Проверка рынка...
+[2026-07-18 19:55:11,440] INFO: [OI] Проверка рынка...
+[2026-07-18 19:59:22,242] INFO: Модуль остановлен пользователем.
+[2026-07-18 20:06:56,113] INFO: Модуль Open Interest успешно инициализирован и запущен.
+[2026-07-18 20:06:56,115] INFO: [OI] Проверка рынка...
+[2026-07-18 20:06:57,572] INFO: Фаза рынка определена: [MARKET_SILENCE]
+[2026-07-18 20:11:18,703] INFO: Модуль остановлен пользователем.
+[2026-07-18 20:11:21 GMT+5] INFO: Модуль Open Interest успешно инициализирован и запущен.
+[2026-07-18 20:11:23 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:12:24 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:13:25 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:14:27 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:15:28 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:16:30 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:17:31 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:18:33 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:19:34 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:20:36 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:21:37 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:22:39 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:23:40 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:24:42 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:25:43 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:26:45 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:27:46 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:28:48 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:29:50 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:30:51 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:31:53 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:32:54 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:33:56 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:34:57 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:35:59 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:37:01 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:38:02 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:39:04 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:40:06 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:41:08 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:42:09 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:43:11 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:44:12 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:45:13 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:46:15 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:47:17 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:48:18 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:49:20 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:50:21 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:51:23 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:52:24 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:53:26 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:54:27 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:55:29 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:56:30 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:57:32 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:58:34 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 20:59:35 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:00:37 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:01:38 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:02:40 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:03:41 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:04:43 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:05:45 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:06:46 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:07:49 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:08:50 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:09:52 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:10:53 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:11:55 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 21:12:57 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-18 23:49:24 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/ticker/price?symbol=BTCUSDT (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001EA4BCFDBE0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connection.py", line 704, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connection.py", line 205, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x000001EA4BCFDBE0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/ticker/price?symbol=BTCUSDT (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001EA4BCFDBE0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 53, in start_loop
+    raw_data = run_collector(self.client)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\raw_collector01.py", line 12, in run_collector
+    data = client.get_current_ticker(symbol="BTCUSDT")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\core\binance_client.py", line 25, in get_current_ticker
+    price_res = requests.get(price_url, params={"symbol": symbol}, timeout=self.timeout)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_algo\venv\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/ticker/price?symbol=BTCUSDT (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001EA4BCFDBE0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-19 11:34:33 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-19 11:35:34 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-19 11:36:35 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-19 11:37:37 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-19 11:38:38 GMT+5] ERROR: Критический сбой в цикле oi_analyzer: 'time_str'
+Traceback (most recent call last):
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\main.py", line 54, in start_loop
+    analysis_res = process_strategy(raw_data, self.main_queue)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\strategy_processor02.py", line 73, in process_strategy
+    HistoryManager.update_sliding_window(current_oi)
+  File "C:\Users\Ramazan\OneDrive\Desktop\taurus_x\modules\oi_analyzer\history_manager.py", line 69, in update_sliding_window
+    if history and history[-1]["time_str"][:14] == current_hour_bucket[:14]:
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'time_str'
+[2026-07-19 11:39:06 GMT+5] INFO: Модуль остановлен пользователем.
+[2026-07-19 11:39:10 GMT+5] INFO: Модуль Open Interest успешно инициализирован и запущен.
+[2026-07-19 11:39:10 GMT+5] WARNING: Обнаружен старый формат кэша истории. Сброс истории для перезаписи.
+[2026-07-19 11:39:11 GMT+5] INFO: История успешно синхронизирована с Binance в формате GMT+5.
