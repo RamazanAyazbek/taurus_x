@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     # 1. Заполняем историю (эмулируем, что робот скачал из базы 48 часов истории)
     # Средний объем пусть крутится в районе 1000 BTC
-    for _ in range(48):
+    for _ in range(168):
         mock_vol = np.random.normal(1000, 150)  # Исторический шум вокруг 1000 BTC
         mock_buy = mock_vol * 0.5
         analyzer.update(current_volume=mock_vol, taker_buy_volume=mock_buy)
