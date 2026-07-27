@@ -1,0 +1,183 @@
+[2026-07-22 22:13:33] INFO: --- ÌÅÑß×ÍÀß ÁÀÇÎÂÀß ÑÒÀÒÈÑÒÈÊÀ ÇÀ 30 ÄÍÅÉ ---
+Îáúåì: Ñðåäíèé=6677.1, Ìåäèàíà=4489.7, Îòêëîíåíèå(std)=6889.0
+\u0394OI (%): Ñðåäíèé=0.005%, Ìåäèàíà=-0.009%, Îòêëîíåíèå(std)=0.554%
+\u0394Öåíà (%): Ñðåäíèé=0.005%, Ìåäèàíà=0.004%, Îòêëîíåíèå(std)=0.455%
+------------------------------------------------
+[2026-07-23 21:36:11] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume: Mean=6585.7, Median=4400.1, Std=6838.5
+dOI (%): Mean=0.007%, Median=-0.010%, Std=0.551%
+dPrice (%): Mean=0.007%, Median=0.004%, Std=0.453%
+------------------------------------------------
+[2026-07-23 21:46:05] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume  : Mean=6585.7, Median=4400.1, Std=6838.5
+dOI (%) : Mean=0.007%, Median=-0.010%, Std=0.551%
+dPrice (%): Mean=0.007%, Median=0.004%, Std=0.453%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-23 18:00] Close: 64858.6 | Vol: 14102.6 (3.21x Med) | dPrice: -0.43% | dOI: -0.40%
+  â€¢ [2026-07-23 19:00] Close: 64884.6 | Vol: 11702.7 (2.66x Med) | dPrice: +0.04% | dOI: -0.07%
+  â€¢ [2026-07-23 20:00] Close: 64940.4 | Vol: 10141.3 (2.30x Med) | dPrice: +0.09% | dOI: +2.02%
+------------------------------------------------
+[2026-07-23 21:47:26] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume  : Mean=6585.7, Median=4400.1, Std=6838.5
+dOI (%) : Mean=0.007%, Median=-0.010%, Std=0.551%
+dPrice (%): Mean=0.007%, Median=0.004%, Std=0.453%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-23 18:00] Close: 64858.6 | Vol: 14102.6 (3.21x Med) | dPrice: -0.43% | dOI: -0.40%
+  â€¢ [2026-07-23 19:00] Close: 64884.6 | Vol: 11702.7 (2.66x Med) | dPrice: +0.04% | dOI: -0.07%
+  â€¢ [2026-07-23 20:00] Close: 64940.4 | Vol: 10141.3 (2.30x Med) | dPrice: +0.09% | dOI: +2.02%
+------------------------------------------------
+[2026-07-23 21:55:30] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume  : Mean=6585.7, Median=4400.1, Std=6838.5
+dOI (%) : Mean=0.007%, Median=-0.010%, Std=0.551%
+dPrice (%): Mean=0.007%, Median=0.004%, Std=0.453%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-23 18:00] Close: 64858.6 | Vol: 14102.6 (3.21x Med) | dPrice: -0.43% | dOI: -0.40%
+  â€¢ [2026-07-23 19:00] Close: 64884.6 | Vol: 11702.7 (2.66x Med) | dPrice: +0.04% | dOI: -0.07%
+  â€¢ [2026-07-23 20:00] Close: 64940.4 | Vol: 10141.3 (2.30x Med) | dPrice: +0.09% | dOI: +2.02%
+------------------------------------------------
+[2026-07-24 19:31:54] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume  : Mean=6567.8, Median=4431.1, Std=6768.0
+dOI (%) : Mean=0.008%, Median=-0.008%, Std=0.549%
+dPrice (%): Mean=0.010%, Median=0.004%, Std=0.444%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-24 16:00] Close: 65045.7 | Vol: 4034.1 (0.91x Med) | dPrice: +0.18% | dOI: +0.24%
+  â€¢ [2026-07-24 17:00] Close: 64746.6 | Vol: 4732.9 (1.07x Med) | dPrice: -0.46% | dOI: +0.24%
+  â€¢ [2026-07-24 18:00] Close: 64129.1 | Vol: 29360.7 (6.63x Med) | dPrice: -0.95% | dOI: +0.28%
+------------------------------------------------
+[2026-07-24 23:12:50] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000028711320EC0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-25 07:44:24] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume  : Mean=6410.9, Median=4380.6, Std=6537.1
+dOI (%) : Mean=0.011%, Median=-0.007%, Std=0.530%
+dPrice (%): Mean=0.008%, Median=0.001%, Std=0.436%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-25 04:00] Close: 64116.5 | Vol: 988.2 (0.23x Med) | dPrice: -0.03% | dOI: +0.07%
+  â€¢ [2026-07-25 05:00] Close: 64049.6 | Vol: 6491.0 (1.48x Med) | dPrice: -0.10% | dOI: -0.13%
+  â€¢ [2026-07-25 06:00] Close: 64039.2 | Vol: 2142.0 (0.49x Med) | dPrice: -0.02% | dOI: +1.90%
+------------------------------------------------
+[2026-07-25 07:57:15] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume  : Mean=6410.9, Median=4380.6, Std=6537.1
+dOI (%) : Mean=0.011%, Median=-0.007%, Std=0.530%
+dPrice (%): Mean=0.008%, Median=0.001%, Std=0.436%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-25 04:00] Close: 64116.5 | Vol: 988.2 (0.23x Med) | dPrice: -0.03% | dOI: +0.07% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 05:00] Close: 64049.6 | Vol: 6491.0 (1.48x Med) | dPrice: -0.10% | dOI: -0.13% | Tag: ðŸ’¥ LONG_LIQUIDATION
+  â€¢ [2026-07-25 06:00] Close: 64039.2 | Vol: 2142.0 (0.49x Med) | dPrice: -0.02% | dOI: +1.90% | Tag: âšª NEUTRAL / FLAT
+------------------------------------------------
+[2026-07-25 08:00:19] INFO: âœ… [HOUR CLOSED]: [2026-07-25 07:00] Close: 64010.5 | Vol: 1372.2 (0.31x Med) | dPrice: -0.04% | dOI: -0.06% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 09:01:00] INFO: âœ… [HOUR CLOSED]: [2026-07-25 08:00] Close: 64052.9 | Vol: 1221.8 (0.28x Med) | dPrice: +0.07% | dOI: +0.08% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 10:01:41] INFO: âœ… [HOUR CLOSED]: [2026-07-25 09:00] Close: 64146.9 | Vol: 1255.8 (0.29x Med) | dPrice: +0.15% | dOI: +0.02% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 10:52:16] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=6384.5, Median=4344.3, Std=6538.8
+|dOI| Activity   : Mean=0.305%, Median=0.160%, Std=0.433%
+|dPrice| Volat.  : Mean=0.272%, Median=0.188%, Std=0.340%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-25 07:00] Close: 64010.5 | Vol: 1372.2 (0.32x Med) | dPrice: -0.04% | dOI: -0.06% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 08:00] Close: 64052.9 | Vol: 1221.8 (0.28x Med) | dPrice: +0.07% | dOI: +0.08% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 09:00] Close: 64146.9 | Vol: 1255.8 (0.29x Med) | dPrice: +0.15% | dOI: +0.02% | Tag: âšª NEUTRAL / FLAT
+------------------------------------------------
+[2026-07-25 11:01:24] INFO: âœ… [HOUR CLOSED]: [2026-07-25 10:00] Close: 63990.1 | Vol: 1755.9 (0.40x Med) | dPrice: -0.24% | dOI: -0.05% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 12:02:03] INFO: âœ… [HOUR CLOSED]: [2026-07-25 11:00] Close: 63982.9 | Vol: 1842.2 (0.43x Med) | dPrice: -0.01% | dOI: +0.15% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 17:01:33] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=6331.1, Median=4237.5, Std=6545.4
+|dOI| Activity   : Mean=0.301%, Median=0.157%, Std=0.432%
+|dPrice| Volat.  : Mean=0.264%, Median=0.187%, Std=0.293%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-25 14:00] Close: 63973.9 | Vol: 2160.1 (0.51x Med) | dPrice: +0.20% | dOI: +0.02% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 15:00] Close: 64039.6 | Vol: 1752.0 (0.41x Med) | dPrice: +0.10% | dOI: -0.01% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 16:00] Close: 64031.3 | Vol: 1213.5 (0.29x Med) | dPrice: -0.01% | dOI: -0.09% | Tag: âšª NEUTRAL / FLAT
+------------------------------------------------
+[2026-07-25 18:02:38] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000023045152090>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-25 18:02:58] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=6241.5, Median=4223.4, Std=6163.2
+|dOI| Activity   : Mean=0.296%, Median=0.157%, Std=0.416%
+|dPrice| Volat.  : Mean=0.261%, Median=0.185%, Std=0.285%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-25 15:00] Close: 64039.6 | Vol: 1752.0 (0.41x Med) | dPrice: +0.10% | dOI: -0.01% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 16:00] Close: 64031.3 | Vol: 1213.5 (0.29x Med) | dPrice: -0.01% | dOI: -0.09% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-25 17:00] Close: 64088.2 | Vol: 1166.6 (0.28x Med) | dPrice: +0.09% | dOI: +0.00% | Tag: âšª NEUTRAL / FLAT
+------------------------------------------------
+[2026-07-25 19:00:40] INFO: âœ… [HOUR CLOSED]: [2026-07-25 18:00] Close: 64136.9 | Vol: 2768.5 (0.66x Med) | dPrice: +0.08% | dOI: -0.10% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 20:12:01] INFO: âœ… [HOUR CLOSED]: [2026-07-25 19:00] Close: 64177.7 | Vol: 1570.7 (0.37x Med) | dPrice: +0.06% | dOI: -0.07% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 21:00:35] INFO: âœ… [HOUR CLOSED]: [2026-07-25 20:00] Close: 64150.0 | Vol: 1961.2 (0.47x Med) | dPrice: -0.04% | dOI: +0.06% | Tag: âšª NEUTRAL / FLAT
+[2026-07-25 21:25:01] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002258824EC60>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-25 22:16:56] INFO: âœ… [HOUR CLOSED]: [2026-07-25 21:00] Close: 64180.9 | Vol: 1548.0 (0.37x Med) | dPrice: +0.05% | dOI: -0.06% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 07:15:51] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=6017.9, Median=4094.6, Std=5664.7
+|dOI| Activity   : Mean=0.289%, Median=0.149%, Std=0.411%
+|dPrice| Volat.  : Mean=0.251%, Median=0.179%, Std=0.266%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-26 04:00] Close: 64338.1 | Vol: 991.9 (0.24x Med) | dPrice: -0.06% | dOI: -0.02% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-26 05:00] Close: 64482.6 | Vol: 1921.4 (0.47x Med) | dPrice: +0.22% | dOI: +0.01% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-26 06:00] Close: 64434.3 | Vol: 1584.6 (0.39x Med) | dPrice: -0.07% | dOI: -0.01% | Tag: âšª NEUTRAL / FLAT
+------------------------------------------------
+[2026-07-26 08:01:24] INFO: âœ… [HOUR CLOSED]: [2026-07-26 07:00] Close: 64490.6 | Vol: 1140.6 (0.28x Med) | dPrice: +0.09% | dOI: -0.06% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 11:35:32] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=5954.5, Median=4053.9, Std=5619.1
+|dOI| Activity   : Mean=0.287%, Median=0.148%, Std=0.411%
+|dPrice| Volat.  : Mean=0.250%, Median=0.175%, Std=0.266%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-26 08:00] Close: 64518.8 | Vol: 1560.6 (0.38x Med) | dPrice: +0.04% | dOI: +0.02% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-26 09:00] Close: 64493.1 | Vol: 1510.2 (0.37x Med) | dPrice: -0.04% | dOI: -0.12% | Tag: âšª NEUTRAL / FLAT
+  â€¢ [2026-07-26 10:00] Close: 64386.0 | Vol: 2022.3 (0.50x Med) | dPrice: -0.17% | dOI: -0.06% | Tag: âšª NEUTRAL / FLAT
+------------------------------------------------
+[2026-07-26 12:02:52] INFO: âœ… [HOUR CLOSED]: [2026-07-26 11:00] Close: 64408.9 | Vol: 3152.0 (0.78x Med) | dPrice: +0.04% | dOI: -0.20% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 13:00:33] INFO: âœ… [HOUR CLOSED]: [2026-07-26 12:00] Close: 64341.2 | Vol: 1444.6 (0.36x Med) | dPrice: -0.11% | dOI: +0.04% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 14:19:33] INFO: âœ… [HOUR CLOSED]: [2026-07-26 13:00] Close: 64450.1 | Vol: 1158.5 (0.29x Med) | dPrice: +0.17% | dOI: -0.01% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 15:02:01] INFO: âœ… [HOUR CLOSED]: [2026-07-26 14:00] Close: 64512.3 | Vol: 1615.3 (0.40x Med) | dPrice: +0.10% | dOI: +0.07% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 17:02:16] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DB256870>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:05:18] INFO: âœ… [HOUR CLOSED]: [2026-07-26 16:00] Close: 64481.4 | Vol: 968.8 (0.24x Med) | dPrice: -0.01% | dOI: +0.25% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 17:08:29] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DABBFC80>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:11:29] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DABBFFB0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:14:29] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DABBF830>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:17:29] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DB257770>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:32:37] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DABBD550>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:35:48] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DABBEDB0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:38:59] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DAAC3E90>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:41:59] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DB254FE0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:45:10] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DB256660>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 17:48:21] ERROR: Scan error: HTTPSConnectionPool(host='fapi.binance.com', port=443): Max retries exceeded with url: /fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=720 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F1DB255DF0>: Failed to resolve 'fapi.binance.com' ([Errno 11001] getaddrinfo failed)"))
+[2026-07-26 18:00:29] INFO: âœ… [HOUR CLOSED]: [2026-07-26 17:00] Close: 64434.2 | Vol: 3951.3 (0.99x Med) | dPrice: -0.07% | dOI: +0.07% | Tag: âšª NEUTRAL / FLAT
+[2026-07-26 19:01:10] INFO: âœ… [HOUR CLOSED]: [2026-07-26 18:00] Close: 64491.8 | Vol: 2041.8 (0.51x Med) | dPrice: +0.09% | dOI: +0.09% | Tag: âšª NEUTRAL / FLAT
+[2026-07-27 20:13:52] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=5811.7, Median=3985.0, Std=5460.4
+|dOI| Activity   : Mean=0.282%, Median=0.145%, Std=0.405%
+|dPrice| Volat.  : Mean=0.243%, Median=0.172%, Std=0.257%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  â€¢ [2026-07-27 17:00] Close: 65065.0 | Vol: 8493.6 (2.13x Med) | dPrice: -0.01% | dOI: +0.09% | Tag: ðŸ”´ BEARISH_IMPULSE
+  â€¢ [2026-07-27 18:00] Close: 65189.4 | Vol: 16449.9 (4.13x Med) | dPrice: +0.19% | dOI: -0.00% | Tag: âš¡ SHORT_SQUEEZE
+  â€¢ [2026-07-27 19:00] Close: 64663.4 | Vol: 18708.4 (4.69x Med) | dPrice: -0.81% | dOI: -0.24% | Tag: ðŸ’¥ LONG_LIQUIDATION
+------------------------------------------------
+[2026-07-27 20:35:10] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64524.4 (-0.21%) | dOI: 0.34% | VolRatio: 2.11x
+[2026-07-27 20:38:12] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64420.8 (-0.38%) | dOI: 0.32% | VolRatio: 2.87x
+[2026-07-27 20:41:14] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64547.7 (-0.18%) | dOI: 0.35% | VolRatio: 2.83x
+[2026-07-27 20:44:16] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64552.6 (-0.17%) | dOI: 0.36% | VolRatio: 2.73x
+[2026-07-27 20:47:18] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64563.7 (-0.15%) | dOI: 0.39% | VolRatio: 2.65x
+[2026-07-27 20:50:20] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64557.7 (-0.16%) | dOI: 0.39% | VolRatio: 2.56x
+[2026-07-27 20:53:22] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64569.2 (-0.15%) | dOI: 0.44% | VolRatio: 2.47x
+[2026-07-27 20:56:25] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64545.1 (-0.18%) | dOI: 0.45% | VolRatio: 2.38x
+[2026-07-27 20:59:27] INFO: SIGNAL: ðŸ”´ BEARISH_IMPULSE | Price: 64529.4 (-0.21%) | dOI: 0.48% | VolRatio: 2.3x
+[2026-07-27 21:02:29] INFO: âœ… [HOUR CLOSED]: [2026-07-27 20:00] Close: 64517.1 | Vol: 9045.0 (2.27x Med) | dPrice: -0.23% | dOI: -0.21% | Tag: ðŸ’¥ LONG_LIQUIDATION
+[2026-07-27 21:02:29] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64524.0 (0.01%) | dOI: 0.72% | VolRatio: 2.54x
+[2026-07-27 21:05:31] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64611.9 (0.15%) | dOI: 0.68% | VolRatio: 2.12x
+[2026-07-27 21:08:33] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64621.8 (0.16%) | dOI: 0.7% | VolRatio: 1.69x
+[2026-07-27 21:26:46] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64680.0 (0.25%) | dOI: 0.83% | VolRatio: 1.53x
+[2026-07-27 21:29:48] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64700.1 (0.28%) | dOI: 0.84% | VolRatio: 1.61x
+[2026-07-27 21:32:51] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64746.9 (0.36%) | dOI: 0.82% | VolRatio: 1.75x
+[2026-07-27 21:35:53] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64900.1 (0.59%) | dOI: 0.72% | VolRatio: 1.95x
+[2026-07-27 21:38:55] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64897.1 (0.59%) | dOI: 0.78% | VolRatio: 2.1x
+[2026-07-27 21:41:57] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64899.7 (0.59%) | dOI: 0.78% | VolRatio: 2.03x
+[2026-07-27 21:44:59] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64886.6 (0.57%) | dOI: 0.74% | VolRatio: 1.98x
+[2026-07-27 21:48:01] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64902.5 (0.6%) | dOI: 0.73% | VolRatio: 1.88x
+[2026-07-27 21:51:03] INFO: SIGNAL: ðŸŸ¢ BULLISH_IMPULSE | Price: 64849.5 (0.52%) | dOI: 0.75% | VolRatio: 1.82x
