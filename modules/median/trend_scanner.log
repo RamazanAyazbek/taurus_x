@@ -232,3 +232,36 @@ Volume           : Mean=4855.9, Median=3429.2, Std=4532.8
   • [2026-08-09 17:00] Close: 64928.5 | Vol: 828.3 (0.24x Med) | dPrice: +0.01% | dOI: -0.00% | Tag: ⚪ NEUTRAL / FLAT
   • [2026-08-09 18:00] Close: 65194.9 | Vol: 5738.7 (1.67x Med) | dPrice: +0.41% | dOI: +0.01% | Tag: 🟢 BULLISH_IMPULSE
 ------------------------------------------------
+[2026-08-10 12:18:45] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=4865.2, Median=3438.7, Std=4534.9
+|dOI| Activity   : Mean=0.240%, Median=0.123%, Std=0.361%
+|dPrice| Volat.  : Mean=0.201%, Median=0.142%, Std=0.220%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  • [2026-08-10 09:00] Close: 64980.6 | Vol: 1876.6 (0.55x Med) | dPrice: +0.05% | dOI: -0.18% | Tag: ⚪ NEUTRAL / FLAT
+  • [2026-08-10 10:00] Close: 65117.1 | Vol: 1694.3 (0.49x Med) | dPrice: +0.21% | dOI: -0.10% | Tag: ⚪ NEUTRAL / FLAT
+  • [2026-08-10 11:00] Close: 65273.2 | Vol: 3310.9 (0.96x Med) | dPrice: +0.24% | dOI: +0.12% | Tag: ⚪ NEUTRAL / FLAT
+------------------------------------------------
+[2026-08-11 09:40:36] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=4943.1, Median=3460.4, Std=4570.1
+|dOI| Activity   : Mean=0.244%, Median=0.126%, Std=0.362%
+|dPrice| Volat.  : Mean=0.203%, Median=0.142%, Std=0.220%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  • [2026-08-11 06:00] Close: 64026.6 | Vol: 2609.5 (0.75x Med) | dPrice: +0.03% | dOI: -0.08% | Tag: ⚪ NEUTRAL / FLAT
+  • [2026-08-11 07:00] Close: 64012.9 | Vol: 1604.2 (0.46x Med) | dPrice: -0.02% | dOI: +0.32% | Tag: ⚪ NEUTRAL / FLAT
+  • [2026-08-11 08:00] Close: 64110.7 | Vol: 2071.1 (0.60x Med) | dPrice: +0.15% | dOI: +0.01% | Tag: ⚪ NEUTRAL / FLAT
+------------------------------------------------
+[2026-08-11 09:43:53] INFO: --- 30-DAY MONTHLY BASELINE STATISTICS ---
+Volume           : Mean=4943.1, Median=3460.4, Std=4570.1
+|dOI| Activity   : Mean=0.244%, Median=0.126%, Std=0.362%
+|dPrice| Volat.  : Mean=0.203%, Median=0.142%, Std=0.220%
+------------------------------------------------
+--- LAST 3 CLOSED HOURS CONTEXT ---
+  • [2026-08-11 06:00] Close: 64026.6 | Vol: 2609.5 (0.75x Med) | dPrice: +0.03% | dOI: -0.08% | Tag: ⚪ NEUTRAL / FLAT
+  • [2026-08-11 07:00] Close: 64012.9 | Vol: 1604.2 (0.46x Med) | dPrice: -0.02% | dOI: +0.32% | Tag: ⚪ NEUTRAL / FLAT
+  • [2026-08-11 08:00] Close: 64110.7 | Vol: 2071.1 (0.60x Med) | dPrice: +0.15% | dOI: +0.01% | Tag: ⚪ NEUTRAL / FLAT
+------------------------------------------------
+[2026-08-11 10:03:59] INFO: ✅ [HOUR CLOSED]: [2026-08-11 09:00] Close: 63997.0 | Vol: 1750.4 (0.51x Med) | dPrice: -0.18% | dOI: +0.12% | Tag: ⚪ NEUTRAL / FLAT
+[2026-08-11 11:04:12] INFO: ✅ [HOUR CLOSED]: [2026-08-11 10:00] Close: 63965.0 | Vol: 2036.3 (0.59x Med) | dPrice: -0.05% | dOI: +0.06% | Tag: ⚪ NEUTRAL / FLAT
+[2026-08-11 12:04:24] INFO: ✅ [HOUR CLOSED]: [2026-08-11 11:00] Close: 63940.0 | Vol: 2921.3 (0.85x Med) | dPrice: -0.04% | dOI: -0.15% | Tag: ⚪ NEUTRAL / FLAT

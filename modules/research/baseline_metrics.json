@@ -1,0 +1,24 @@
+{
+    "symbol": "BTCUSDT",
+    "timeframe": "1h",
+    "updated_at": "2026-08-11 12:21:35",
+    "period_start": "2026-07-13 00:00",
+    "period_end": "2026-08-11 11:00",
+    "history_days_total": 30,
+    "workday_candles_analyzed": 516,
+    "volume": {
+        "mean": 6046.3,
+        "median": 4476.0,
+        "std": 4872.2
+    },
+    "abs_doi": {
+        "mean": 0.29,
+        "median": 0.169,
+        "std": 0.4
+    },
+    "abs_dprice": {
+        "mean": 0.245,
+        "median": 0.182,
+        "std": 0.239
+    }
+}

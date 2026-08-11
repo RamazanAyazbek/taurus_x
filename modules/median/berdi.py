@@ -270,7 +270,7 @@ if __name__ == "__main__":
     print("💾 Monthly baseline & 3H history recorded to trend_scanner.log:\n")
     print(init_log)
 
-    print("\nMonitoring live market every 3 minutes...\n")
+    print("\nMonitoring live market every 10 minutes...\n")
 
     last_signal_key = None
     current_active_hour = None
@@ -317,4 +317,4 @@ if __name__ == "__main__":
             print(f"❌ {err_msg}")
             logging.error(err_msg)
 
-        time.sleep(180)
+        time.sleep(600)
