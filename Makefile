@@ -17,12 +17,24 @@ freeze_reqs:
 build: stop freeze_reqs
 	docker build -t $(IMAGE_NAME) .
 
+# run:
+# 	docker run -d \
+# 		--name $(CONTAINER_NAME) \
+# 		--restart unless-stopped \
+# 		--memory="256m" \
+# 		--dns 8.8.8.8 --dns 1.1.1.1 \
+# 		-v $(WORKDIR):/app \
+# 		$(IMAGE_NAME)
+
 run:
 	docker run -d \
 		--name $(CONTAINER_NAME) \
 		--restart unless-stopped \
 		--memory="256m" \
 		--dns 8.8.8.8 --dns 1.1.1.1 \
+		--log-driver json-file \
+		--log-opt max-size=100m \
+		--log-opt max-file=3 \
 		-v $(WORKDIR):/app \
 		$(IMAGE_NAME)
 
