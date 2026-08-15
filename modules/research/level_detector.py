@@ -8,10 +8,10 @@ from datetime import datetime
 
 class LevelDetector:
     def __init__(
-        self,
-        symbol: str = "BTCUSDT",
-        baseline_file: str = "baseline_metrics.json",
-        timezone_offset: int = 5
+            self,
+            symbol: str = "BTCUSDT",
+            baseline_file: str = "baseline_metrics.json",
+            timezone_offset: int = 5
     ):
         self.symbol = symbol
         self.baseline_file = baseline_file
@@ -53,7 +53,7 @@ class LevelDetector:
 
         zone_half_width = current_price * (self.dprice_median / 100)
         raw_levels = sorted(raw_levels, key=lambda x: x['price'])
-        
+
         zones = []
         current_zone = []
 
@@ -76,7 +76,7 @@ class LevelDetector:
             mean_price = np.mean(prices)
             floor = mean_price - zone_half_width
             ceil = mean_price + zone_half_width
-            
+
             touches = len(zone)
             # Математический расчёт силы: контакты + вес таймфрейма (D1 тяжелее, чем H1)
             score = (touches * 2) + timeframe_weight
@@ -103,8 +103,8 @@ class LevelDetector:
         zones_d1 = self.cluster_levels_into_zones(raw_d1, current_price, timeframe_weight=5)
         zones_h1 = self.cluster_levels_into_zones(raw_h1, current_price, timeframe_weight=1)
 
-        reach_limit = 0.05 
-        
+        reach_limit = 0.05
+
         all_zones = []
         for z in zones_d1:
             if abs(z['core_price'] - current_price) / current_price <= reach_limit:
@@ -164,14 +164,16 @@ class LevelDetector:
         # 1. Вывод сопротивлений (вверху шкалы, по возрастанию)
         print("   ▲ [RESISTANCE ZONES]")
         for z in reversed(resistances):  # Выводим инверсировано, чтобы самые высокие были в самом верху терминала
-            print(f"   | [{z['tf']}] Zone: {z['floor']} - {z['ceil']} | Core: {z['core_price']:7.1f} | Touches: {z['touches']:2d} | Score: {z['score']:2d}")
-        
+            print(
+                f"   | [{z['tf']}] Zone: {z['floor']} - {z['ceil']} | Core: {z['core_price']:7.1f} | Touches: {z['touches']:2d} | Score: {z['score']:2d}")
+
         # 2. Вывод Текущей цены (Разделитель)
         print(f" ══♦══ CURRENT PRICE: {cp} ══♦══")
 
         # 3. Вывод поддержек (внизу шкалы, по убыванию к полу)
         for z in reversed(supports):
-            print(f"   | [{z['tf']}] Zone: {z['floor']} - {z['ceil']} | Core: {z['core_price']:7.1f} | Touches: {z['touches']:2d} | Score: {z['score']:2d}")
+            print(
+                f"   | [{z['tf']}] Zone: {z['floor']} - {z['ceil']} | Core: {z['core_price']:7.1f} | Touches: {z['touches']:2d} | Score: {z['score']:2d}")
         print("   ▼ [SUPPORT ZONES]")
 
         print("-" * 90)

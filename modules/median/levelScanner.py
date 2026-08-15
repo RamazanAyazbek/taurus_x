@@ -2,198 +2,195 @@ import requests
 import pandas as pd
 import numpy as np
 from datetime import datetime, timezone, timedelta
+import json
+import os
+import requests
+import pandas as pd
+from datetime import datetime, timezone, timedelta
 
 
-class LiquidityLevelScanner:
+class LevelDetector:
     def __init__(
             self,
             symbol: str = "BTCUSDT",
-            timeframe: str = "4h",  # Для среднесрочных уровней лучше 4h или 1h
-            days_back: int = 60,  # Глубина истории (60 дней)
-            tolerance_pct: float = 0.4,  # Погрешность объединения близких уровней в 1 кластер (0.4%)
+            baseline_file: str = "baseline_metrics.json",
             timezone_offset: int = 5
     ):
         self.symbol = symbol
-        self.timeframe = timeframe
-        self.limit = min(days_back * (24 // int(timeframe.replace('h', '')) if 'h' in timeframe else 24), 1000)
-        self.tolerance_pct = tolerance_pct
+        self.baseline_file = baseline_file
         self.timezone_offset = timezone_offset
         self.base_url = "https://fapi.binance.com"
+        self.dprice_median = self.load_baseline_volatility()
 
-    def fetch_klines(self) -> pd.DataFrame:
-        """ Загружает историю свечей для поиска Pivot Points """
+    def load_baseline_volatility(self) -> float:
+        if not os.path.exists(self.baseline_file):
+            return 0.2
+        with open(self.baseline_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data.get("abs_dprice", {}).get("median", 0.2)
+
+    def fetch_candles(self, interval: str, limit: int) -> pd.DataFrame:
         url = f"{self.base_url}/fapi/v1/klines"
-        params = {"symbol": self.symbol, "interval": self.timeframe, "limit": self.limit}
+        params = {"symbol": self.symbol, "interval": interval, "limit": limit}
         res = requests.get(url, params=params).json()
-
         df = pd.DataFrame(res, columns=[
             'open_time', 'open', 'high', 'low', 'close', 'volume',
             'close_time', 'quote_volume', 'trades', 'taker_buy_volume',
             'taker_buy_quote_volume', 'ignore'
         ])
-
-        cols = ['open', 'high', 'low', 'close', 'volume']
-        df[cols] = df[cols].astype(float)
-
-        offset_hours = timedelta(hours=self.timezone_offset)
-        tz_info = timezone(offset_hours)
-
-        df['time'] = (
-            pd.to_datetime(df['open_time'], unit='ms', utc=True)
-            .dt.tz_convert(tz_info)
-            .dt.tz_localize(None)
-        )
+        df[['open', 'high', 'low', 'close', 'volume']] = df[['open', 'high', 'low', 'close', 'volume']].astype(float)
         return df
 
-    def find_pivot_points(self, df: pd.DataFrame, window: int = 3) -> list:
-        """
-        Ищет локальные максимумы (Resistance) и минимумы (Support).
-        window=3 означает, что экстремум выше/ниже 3 свечей слева и 3 свечей справа.
-        """
-        pivots = []
+    def find_raw_levels(self, df: pd.DataFrame, window: int = 3) -> list:
+        levels = []
         for i in range(window, len(df) - window):
-            high_range = df['high'].iloc[i - window: i + window + 1]
-            low_range = df['low'].iloc[i - window: i + window + 1]
+            if df['low'].iloc[i] == df['low'].iloc[i - window:i + window + 1].min():
+                levels.append({"type": "SUPPORT", "price": df['low'].iloc[i]})
+            if df['high'].iloc[i] == df['high'].iloc[i - window:i + window + 1].max():
+                levels.append({"type": "RESISTANCE", "price": df['high'].iloc[i]})
+        return levels
 
-            current_high = df['high'].iloc[i]
-            current_low = df['low'].iloc[i]
+    def cluster_levels_into_zones(self, raw_levels: list, current_price: float, timeframe_weight: int) -> list:
+        if not raw_levels:
+            return []
 
-            # Swing High (Сопротивление)
-            if current_high == high_range.max():
-                pivots.append({
-                    "price": current_high,
-                    "type": "RESISTANCE",
-                    "time": df['time'].iloc[i],
-                    "volume": df['volume'].iloc[i],
-                    "index": i
-                })
+        zone_half_width = current_price * (self.dprice_median / 100)
+        raw_levels = sorted(raw_levels, key=lambda x: x['price'])
 
-            # Swing Low (Поддержка)
-            if current_low == low_range.min():
-                pivots.append({
-                    "price": current_low,
-                    "type": "SUPPORT",
-                    "time": df['time'].iloc[i],
-                    "volume": df['volume'].iloc[i],
-                    "index": i
-                })
+        zones = []
+        current_zone = []
 
-        return pivots
-
-    def cluster_and_score_levels(self, df: pd.DataFrame, pivots: list) -> pd.DataFrame:
-        """
-        Группирует близкие пивоты в единые зоны/уровни и рассчитывает Силу Уровня (Strength Score).
-        """
-        if not pivots:
-            return pd.DataFrame()
-
-        current_price = df['close'].iloc[-1]
-        mean_volume = df['volume'].mean()
-
-        # Сортируем пивоты по цене
-        pivots_sorted = sorted(pivots, key=lambda x: x['price'])
-
-        clusters = []
-        current_cluster = [pivots_sorted[0]]
-
-        for p in pivots_sorted[1:]:
-            prev_price = current_cluster[-1]['price']
-            # Если разница в цене меньше tolerance_pct %, объединяем в один уровень
-            if abs(p['price'] - prev_price) / prev_price * 100 <= self.tolerance_pct:
-                current_cluster.append(p)
+        for lvl in raw_levels:
+            if not current_zone:
+                current_zone.append(lvl)
             else:
-                clusters.append(current_cluster)
-                current_cluster = [p]
-        clusters.append(current_cluster)
+                prev_price = current_zone[-1]['price']
+                if lvl['price'] - prev_price <= zone_half_width * 1.5:
+                    current_zone.append(lvl)
+                else:
+                    zones.append(current_zone)
+                    current_zone = [lvl]
+        if current_zone:
+            zones.append(current_zone)
 
-        processed_levels = []
+        formatted_zones = []
+        for zone in zones:
+            prices = [x['price'] for x in zone]
+            mean_price = np.mean(prices)
+            floor = mean_price - zone_half_width
+            ceil = mean_price + zone_half_width
 
-        for cl in clusters:
-            prices = [p['price'] for p in cl]
-            level_price = float(np.mean(prices))
-            touch_count = len(cl)
+            touches = len(zone)
+            # Математический расчёт силы: контакты + вес таймфрейма (D1 тяжелее, чем H1)
+            score = (touches * 2) + timeframe_weight
 
-            # Определяем тип (Поддержка если ниже текущей цены, Сопротивление если выше)
-            level_type = "RESISTANCE" if level_price > current_price else "SUPPORT"
-
-            # МЕТРИКИ СИЛЫ ("БЕТОННОСТИ"):
-            # 1. Количество касаний (до 40 баллов)
-            score_touches = min(touch_count * 10, 40)
-
-            # 2. Объем на касаниях (до 30 баллов)
-            avg_cluster_vol = np.mean([p['volume'] for p in cl])
-            vol_ratio = avg_cluster_vol / mean_volume
-            score_volume = min(vol_ratio * 15, 30)
-
-            # 3. Свежесть / Нецелостность (Unswept Status)
-            # Проверяем, пробивала ли цена этот уровень после последнего пивота
-            last_pivot_idx = max([p['index'] for p in cl])
-            future_candles = df.iloc[last_pivot_idx + 1:]
-
-            if level_type == "RESISTANCE":
-                is_broken = (future_candles['high'] > level_price * 1.002).any()
-            else:
-                is_broken = (future_candles['low'] < level_price * 0.998).any()
-
-            score_freshness = 30 if not is_broken else 5  # Если уровень не пробит, он цел и содержит стопы (+30 баллов)
-
-            # Итоговый Score (0 - 100)
-            total_score = round(score_touches + score_volume + score_freshness, 1)
-
-            # Категория «бетонности»
-            if total_score >= 70:
-                strength_tag = "🧱 CONCRETE (Бетон)"
-            elif total_score >= 45:
-                strength_tag = "⚔️ STRONG (Сильный)"
-            else:
-                strength_tag = "🔹 WEAK (Слабый)"
-
-            dist_pct = round(((level_price - current_price) / current_price) * 100, 2)
-
-            processed_levels.append({
-                "level_price": round(level_price, 2),
-                "type": level_type,
-                "distance_pct": dist_pct,
-                "touches": touch_count,
-                "score": total_score,
-                "strength": strength_tag,
-                "is_clean_unswept": not is_broken
+            formatted_zones.append({
+                "core_price": round(mean_price, 1),
+                "floor": round(floor, 1),
+                "ceil": round(ceil, 1),
+                "touches": touches,
+                "score": score
             })
 
-        df_levels = pd.DataFrame(processed_levels)
-        # Фильтруем: берем ближайшие к текущей цене уровни
-        df_levels = df_levels.sort_values(by="distance_pct", key=abs).reset_index(drop=True)
-        return df_levels
+        return formatted_zones
+
+    def get_tracked_zones(self) -> dict:
+        df_d1 = self.fetch_candles(interval="1d", limit=30)
+        df_h1 = self.fetch_candles(interval="1h", limit=96)
+        current_price = df_h1['close'].iloc[-1]
+
+        raw_d1 = self.find_raw_levels(df_d1, window=2)
+        raw_h1 = self.find_raw_levels(df_h1, window=4)
+
+        # Передаем вес: для D1 = 5 базовых очков силы, для H1 = 1 очко
+        zones_d1 = self.cluster_levels_into_zones(raw_d1, current_price, timeframe_weight=5)
+        zones_h1 = self.cluster_levels_into_zones(raw_h1, current_price, timeframe_weight=1)
+
+        reach_limit = 0.05
+
+        all_zones = []
+        for z in zones_d1:
+            if abs(z['core_price'] - current_price) / current_price <= reach_limit:
+                z['tf'] = 'D1'
+                all_zones.append(z)
+        for z in zones_h1:
+            if abs(z['core_price'] - current_price) / current_price <= reach_limit:
+                z['tf'] = 'H1'
+                all_zones.append(z)
+
+        return {
+            "current_price": current_price,
+            "zones": all_zones
+        }
+
+    def print_report(self):
+        data = self.get_tracked_zones()
+        cp = data['current_price']
+        zones = data['zones']
+
+        # Разделяем на поддержки и сопротивления
+        supports = [z for z in zones if z['ceil'] < cp]
+        resistances = [z for z in zones if z['floor'] > cp]
+
+        # Сортируем: поддержки по возрастанию цены, сопротивления по возрастанию цены
+        supports = sorted(supports, key=lambda x: x['core_price'])
+        resistances = sorted(resistances, key=lambda x: x['core_price'])
+
+        # --- Расчет наименьшего сопротивления (в пределах 1.5% хода цены) ---
+        scan_range = cp * 0.015
+        near_supps = [z for z in supports if (cp - z['core_price']) <= scan_range]
+        near_resis = [z for z in resistances if (z['core_price'] - cp) <= scan_range]
+
+        score_down = sum([z['score'] for z in near_supps])
+        score_up = sum([z['score'] for z in near_resis])
+
+        dist_to_supp = (cp - supports[-1]['core_price']) if supports else scan_range
+        dist_to_res = (resistances[0]['core_price'] - cp) if resistances else scan_range
+
+        # Вычисление вектора
+        if score_up == score_down:
+            path_bias = "NEUTRAL (Сопротивление симметрично)"
+            ratio = 1.0
+        elif score_up > score_down:
+            ratio = score_up / max(1, score_down)
+            path_bias = f"DOWNWARD (Вниз идти легче в {ratio:.1f}x раз, сверху сильные блоки)"
+        else:
+            ratio = score_down / max(1, score_up)
+            path_bias = f"UPWARD (Вверх идти легче в {ratio:.1f}x раз, снизу сильные блоки)"
+
+        # --- ВЫВОД В ТЕРМИНАЛ ---
+        print("=" * 90)
+        print(f"📊 TAURUS MARKET MAP ({self.symbol}) | {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"🎯 Baseline dynamic width: ±{self.dprice_median}%")
+        print("=" * 90)
+
+        # 1. Вывод сопротивлений (вверху шкалы, по возрастанию)
+        print("   ▲ [RESISTANCE ZONES]")
+        for z in reversed(resistances):  # Выводим инверсировано, чтобы самые высокие были в самом верху терминала
+            print(
+                f"   | [{z['tf']}] Zone: {z['floor']} - {z['ceil']} | Core: {z['core_price']:7.1f} | Touches: {z['touches']:2d} | Score: {z['score']:2d}")
+
+        # 2. Вывод Текущей цены (Разделитель)
+        print(f" ══♦══ CURRENT PRICE: {cp} ══♦══")
+
+        # 3. Вывод поддержек (внизу шкалы, по убыванию к полу)
+        for z in reversed(supports):
+            print(
+                f"   | [{z['tf']}] Zone: {z['floor']} - {z['ceil']} | Core: {z['core_price']:7.1f} | Touches: {z['touches']:2d} | Score: {z['score']:2d}")
+        print("   ▼ [SUPPORT ZONES]")
+
+        print("-" * 90)
+        print("💡 LEFEVRE PATH OF LEAST RESISTANCE (In the intraday range 1.5%):")
+        print(f"   • (Res-Score): {score_up} (closest {dist_to_res:.1f} pts)")
+        print(f"   • (Sup-Score): {score_down} (closest {dist_to_supp:.1f} pts)")
+        print(f"   • LEFEVRE VECTOR   : {path_bias}")
+        print("=" * 90 + "\n")
 
 
 if __name__ == "__main__":
-    scanner = LiquidityLevelScanner(symbol="BTCUSDT", timeframe="4h", days_back=60, tolerance_pct=0.5)
-
-    print("Загружаем данные и рассчитываем сильные уровни...")
-    df_klines = scanner.fetch_klines()
-    current_price = df_klines['close'].iloc[-1]
-
-    pivots = scanner.find_pivot_points(df_klines, window=3)
-    df_levels = scanner.cluster_and_score_levels(df_klines, pivots)
-
-    print(f"\n===================================================================================")
-    print(f" 🎯 КЛЮЧЕВЫЕ УРОВНИ ЛИКВИДНОСТИ ДЛЯ {scanner.symbol} (Текущая цена: {current_price})")
-    print(f"===================================================================================\n")
-
-    # Показываем 5 ближайших сопротивлений и 5 ближайших поддержек
-    res_levels = df_levels[df_levels['type'] == 'RESISTANCE'].head(5)
-    sup_levels = df_levels[df_levels['type'] == 'SUPPORT'].head(5)
-
-    print("--- 🔴 СОПРОТИВЛЕНИЯ (RESISTANCE - Сверху) ---")
-    for _, r in res_levels.iterrows():
-        print(
-            f"• Level: {r['level_price']:<8} | Дистанция: +{r['distance_pct']:<5}% | "
-            f"Касаний: {r['touches']} | Score: {r['score']}/100 | {r['strength']}"
-        )
-
-    print("\n--- 🟢 ПОДДЕРЖКИ (SUPPORT - Снизу) ---")
-    for _, s in sup_levels.iterrows():
-        print(
-            f"• Level: {s['level_price']:<8} | Дистанция: {s['distance_pct']:<5}% | "
-            f"Касаний: {s['touches']} | Score: {s['score']}/100 | {s['strength']}"
-        )
+    detector = LevelDetector(
+        symbol="BTCUSDT",
+        baseline_file="baseline_metrics.json",
+        timezone_offset=5
+    )
+    detector.print_report()
