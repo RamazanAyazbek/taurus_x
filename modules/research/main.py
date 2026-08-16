@@ -76,6 +76,19 @@ def run_baseline():
 
 
 def run_market_snapshot():
+
+    # 2. Level Detector Output
+    try:
+        detector = LevelDetector(
+            symbol=SYMBOL,
+            baseline_file=BASELINE_FILE,
+            timezone_offset=TIMEZONE_OFFSET
+        )
+        detector.print_report()
+    except Exception as e:
+        print(f"❌ Error in level detector: {e}")
+        traceback.print_exc()
+
     # 1. Session Scanner Output
     try:
         scanner = TodaySessionScanner(
@@ -91,17 +104,7 @@ def run_market_snapshot():
 
     print("-" * 50)
 
-    # 2. Level Detector Output
-    try:
-        detector = LevelDetector(
-            symbol=SYMBOL,
-            baseline_file=BASELINE_FILE,
-            timezone_offset=TIMEZONE_OFFSET
-        )
-        detector.print_report()
-    except Exception as e:
-        print(f"❌ Error in level detector: {e}")
-        traceback.print_exc()
+
 
 def main():
     run_baseline()

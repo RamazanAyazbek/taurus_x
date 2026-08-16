@@ -45,7 +45,7 @@ stop:
 logs:
 	docker logs -f $(CONTAINER_NAME)
 
-restart: build run
+restart: stop run
 
 clean:
 	docker system prune -f
