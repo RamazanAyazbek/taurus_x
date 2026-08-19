@@ -105,58 +105,48 @@ def run_market_snapshot():
     print("-" * 50)
 
 
-
 def main():
-    run_baseline()
-    run_market_snapshot()
+  run_baseline()
+  run_market_snapshot()
 
-    printer = BinanceFuturesLivePrinter(
-        symbol=SYMBOL,
-        timeframe=TIMEFRAME,
-        timezone_offset=TIMEZONE_OFFSET
-    )
+  printer = BinanceFuturesLivePrinter(
+      symbol=SYMBOL, timeframe=TIMEFRAME, timezone_offset=TIMEZONE_OFFSET
+  )
 
-    print_header("LIVE MARKET MONITOR ACTIVATED")
+  print_header("LIVE MARKET MONITOR ACTIVATED")
 
-    last_baseline_update = time.time()
-    last_printed_minute = -1
+  # 🔥 МГНОВЕННЫЙ ПЕРВЫЙ ВЫВОД при запуске скрипта
+  printer.process_step()
 
-    while True:
-        try:
-            now_dt = datetime.now()
-            current_minute = now_dt.minute
+  last_baseline_update = time.time()
+  last_printed_minute = datetime.now().minute
 
-            # Получаем свечу каждую минуту для отслеживания закрытия часа
-            active_candle_ms = printer.get_live_data_silent_or_check()
+  while True:
+    try:
+      now_dt = datetime.now()
+      current_minute = now_dt.minute
 
-            # 1. Проверяем, не закрылся ли час
-            if active_candle_ms:
-                if printer.current_candle_open_ms is not None and active_candle_ms > printer.current_candle_open_ms:
-                    closed_candle_ms = printer.current_candle_open_ms
-                    # Вызываем печать итогов закрывшегося часа
-                    printer.get_live_data(force_summary_for_closed=closed_candle_ms)
+      # Печать каждые 10 минут (00, 10, 20, 30, 40, 50)
+      if current_minute % 10 == 0 and current_minute != last_printed_minute:
+        printer.process_step()
+        last_printed_minute = current_minute
 
-                printer.current_candle_open_ms = active_candle_ms
+      # Проверка недельного обновления
+      current_time = time.time()
+      if current_time - last_baseline_update >= BASELINE_UPDATE_INTERVAL:
+        run_baseline()
+        print_header("SCHEDULED WEEKLY SNAPSHOT UPDATE")
+        run_market_snapshot()
+        last_baseline_update = current_time
 
-            # 2. Вывод лога раз в 10 минут (на 0, 10, 20, 30, 40, 50 минутах)
-            if current_minute % 10 == 0 and current_minute != last_printed_minute:
-                printer.get_live_data()
-                last_printed_minute = current_minute
+      time.sleep(10)
 
-            # 3. Проверка недельного обновления
-            current_time = time.time()
-            if current_time - last_baseline_update >= BASELINE_UPDATE_INTERVAL:
-                run_baseline()
-                print_header("SCHEDULED WEEKLY SNAPSHOT UPDATE")
-                run_market_snapshot()
-                last_baseline_update = current_time
+    except Exception as e:
+      print(f"❌ Error in main loop: {e}")
+      traceback.print_exc()
+      time.sleep(15)
 
-            time.sleep(15)  # Опрашиваем раз в 15 секунд для точности
 
-        except Exception as e:
-            print(f"❌ Error in main loop: {e}")
-            traceback.print_exc()
-            time.sleep(15)
 if __name__ == "__main__":
     try:
         main()

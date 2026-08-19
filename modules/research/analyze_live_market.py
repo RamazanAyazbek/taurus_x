@@ -246,8 +246,8 @@ class BinanceFuturesLivePrinter:
     minutes_passed = max(1, min(minutes_passed, 60))
     local_output_time = now_time_utc + timedelta(hours=self.timezone_offset)
 
-    if minutes_passed < 3:
-      return
+    # if minutes_passed < 3:
+    #   return
 
     # Запрос данных по Open Interest
     realtime_oi = 0.0
