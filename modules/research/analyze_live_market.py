@@ -190,7 +190,7 @@ class BinanceFuturesLivePrinter:
 
       print("\n" + "=" * 90, flush=True)
       print(
-          f"⏰ ИТОГ ЧАСА [{open_time_local.strftime('%H:00')}]: {status} |"
+          f"⏰ ИТОГ ЧАСА [{open_time_local.strftime('%H:00-59')}]: {status} |"
           f" Изм: {price_change_pct:+.2f}% ({c_open:.1f} -> {c_close:.1f})",
           flush=True,
       )
@@ -206,121 +206,124 @@ class BinanceFuturesLivePrinter:
       print(f"❌ Ошибка вывода итога часа: {e}")
 
   def process_step(self):
-    """Единый шаг расчета и вывода лога каждые 10 минут."""
-    klines_url = f"{self.base_url}/fapi/v1/klines"
-    params = {"symbol": self.symbol, "interval": self.timeframe, "limit": 3}
+      """Единый шаг расчета и вывода лога каждые 10 минут."""
+      klines_url = f"{self.base_url}/fapi/v1/klines"
+      params = {"symbol": self.symbol, "interval": self.timeframe, "limit": 3}
 
-    try:
-      res_klines = requests.get(klines_url, params=params).json()
-      if not isinstance(res_klines, list) or len(res_klines) < 2:
+      try:
+        res_klines = requests.get(klines_url, params=params).json()
+        if not isinstance(res_klines, list) or len(res_klines) < 2:
+          return
+      except Exception as e:
+        print(f"❌ Ошибка сети: {e}")
         return
-    except Exception as e:
-      print(f"❌ Ошибка сети: {e}")
-      return
 
-    # 1. Проверяем и печатаем закрывшуюся свечу
-    closed_candle = res_klines[-2]
-    closed_open_ms = closed_candle[0]
+      # 1. Проверяем и печатаем закрывшуюся свечу (ИТОГ ЧАСА)
+      closed_candle = res_klines[-2]
+      closed_open_ms = closed_candle[0]
 
-    if self.last_reported_closed_candle != closed_open_ms:
-      self._print_hourly_summary(closed_candle)
-      self.last_reported_closed_candle = closed_open_ms
+      if self.last_reported_closed_candle != closed_open_ms:
+        self._print_hourly_summary(closed_candle)
+        self.last_reported_closed_candle = closed_open_ms
 
-    # 2. Обрабатываем текущую свечу
-    active_candle = res_klines[-1]
-    open_time_ms = active_candle[0]
+      # 2. Обрабатываем текущую свечу
+      active_candle = res_klines[-1]
+      open_time_ms = active_candle[0]
 
-    c_open = float(active_candle[1])
-    c_high = float(active_candle[2])
-    c_low = float(active_candle[3])
-    c_close = float(active_candle[4])
-    c_volume = float(active_candle[5])
-    c_taker_volume = float(active_candle[9])
+      c_open = float(active_candle[1])
+      c_high = float(active_candle[2])
+      c_low = float(active_candle[3])
+      c_close = float(active_candle[4])
+      c_volume = float(active_candle[5])
+      c_taker_volume = float(active_candle[9])
 
-    candle_open_time_utc = pd.to_datetime(open_time_ms, unit="ms", utc=True)
-    now_time_utc = datetime.now(timezone.utc)
+      # Переменные объявляются СТРОГО перед использованием
+      candle_open_time_utc = pd.to_datetime(open_time_ms, unit="ms", utc=True)
+      now_time_utc = datetime.now(timezone.utc)
 
-    minutes_passed = int(
-        (now_time_utc - candle_open_time_utc).total_seconds() // 60
-    )
-    minutes_passed = max(1, min(minutes_passed, 60))
-    local_output_time = now_time_utc + timedelta(hours=self.timezone_offset)
+      minutes_passed = int(
+          (now_time_utc - candle_open_time_utc).total_seconds() // 60
+      )
+      minutes_passed = max(1, min(minutes_passed, 60))
+      local_output_time = now_time_utc + timedelta(hours=self.timezone_offset)
 
-    # if minutes_passed < 3:
-    #   return
+      # Не печатаем промежуточные логи в первые 3 минуты нового часа (чтобы не дублировать ИТОГ ЧАСА)
+      if minutes_passed < 3:
+        return
 
-    # Запрос данных по Open Interest
-    realtime_oi = 0.0
-    try:
-      res_oi = requests.get(
-          f"{self.base_url}/fapi/v1/openInterest",
-          params={"symbol": self.symbol},
-      ).json()
-      if isinstance(res_oi, dict) and "openInterest" in res_oi:
-        realtime_oi = float(res_oi["openInterest"])
-    except Exception:
-      pass
+      # Запрос данных по Open Interest
+      realtime_oi = 0.0
+      try:
+        res_oi = requests.get(
+            f"{self.base_url}/fapi/v1/openInterest",
+            params={"symbol": self.symbol},
+        ).json()
+        if isinstance(res_oi, dict) and "openInterest" in res_oi:
+          realtime_oi = float(res_oi["openInterest"])
+      except Exception:
+        pass
 
-    last_closed_oi = 0.0
-    try:
-      res_hist = requests.get(
-          f"{self.base_url}/futures/data/openInterestHist",
-          params={
-              "symbol": self.symbol,
-              "period": self.timeframe,
-              "limit": 2,
-          },
-      ).json()
-      if isinstance(res_hist, list) and len(res_hist) > 0:
-        last_closed_oi = float(res_hist[-1]["sumOpenInterest"])
-    except Exception:
-      pass
+      last_closed_oi = 0.0
+      try:
+        res_hist = requests.get(
+            f"{self.base_url}/futures/data/openInterestHist",
+            params={
+                "symbol": self.symbol,
+                "period": self.timeframe,
+                "limit": 2,
+            },
+        ).json()
+        if isinstance(res_hist, list) and len(res_hist) > 0:
+          last_closed_oi = float(res_hist[-1]["sumOpenInterest"])
+      except Exception:
+        pass
 
-    live_price_pct = (
-        ((c_close - c_open) / c_open) * 100 if c_open > 0 else 0.0
-    )
-    live_oi_pct = (
-        ((realtime_oi - last_closed_oi) / last_closed_oi) * 100
-        if (realtime_oi > 0 and last_closed_oi > 0)
-        else 0.0
-    )
+      live_price_pct = (
+          ((c_close - c_open) / c_open) * 100 if c_open > 0 else 0.0
+      )
+      live_oi_pct = (
+          ((realtime_oi - last_closed_oi) / last_closed_oi) * 100
+          if (realtime_oi > 0 and last_closed_oi > 0)
+          else 0.0
+      )
 
-    # --- РАСЧЕТ ОТНОСИТЕЛЬНЫХ МЕТРИК OI И SPEED ---
-    oi_ratio = (
-        abs(live_oi_pct) / self.oi_median if self.oi_median > 0 else 0.0
-    )
+      # --- РАСЧЕТ ОТНОСИТЕЛЬНЫХ МЕТРИК OI И SPEED ---
+      oi_ratio = (
+          abs(live_oi_pct) / self.oi_median if self.oi_median > 0 else 0.0
+      )
 
-    oi_speed = live_oi_pct / minutes_passed
-    oi_speed_ratio = (
-        abs(oi_speed) / self.oi_speed_median
-        if self.oi_speed_median > 0
-        else 0.0
-    )
+      oi_speed = live_oi_pct / minutes_passed
+      oi_speed_ratio = (
+          abs(oi_speed) / self.oi_speed_median
+          if self.oi_speed_median > 0
+          else 0.0
+      )
 
-    # --- РАСЧЕТ ПРОЕКЦИИ ОБЪЕМА ---
-    projected_volume = (c_volume / minutes_passed) * 60
-    projected_vol_ratio = (
-        (projected_volume / self.vol_median) if self.vol_median > 0 else 0.0
-    )
+      # --- РАСЧЕТ ПРОЕКЦИИ ОБЪЕМА ---
+      projected_volume = (c_volume / minutes_passed) * 60
+      projected_vol_ratio = (
+          (projected_volume / self.vol_median) if self.vol_median > 0 else 0.0
+      )
 
-    taker_buy_pct = (
-        (c_taker_volume / c_volume * 100) if c_volume > 0 else 0.0
-    )
+      taker_buy_pct = (
+          (c_taker_volume / c_volume * 100) if c_volume > 0 else 0.0
+      )
 
-    zone_str = self.check_zone_intersection(
-        candle_high=c_high, candle_low=c_low, current_price=c_close
-    )
+      zone_str = self.check_zone_intersection(
+          candle_high=c_high, candle_low=c_low, current_price=c_close
+      )
 
-    # Формируем наглядную строку вывода
-    console_output = (
-        f"[{local_output_time.strftime('%Y-%m-%d %H:%M')} |"
-        f" {minutes_passed}m/60m] BTC: {c_close:.1f} ({live_price_pct:+.2f}%)"
-        f" [H:{c_high:.1f}|L:{c_low:.1f}] | dOI: {live_oi_pct:+.2f}%"
-        f" ({oi_ratio:.2f}x Med) | Spd: {oi_speed_ratio:.2f}x Med | Vol:"
-        f" {c_volume:.0f} (Proj: {projected_vol_ratio:.2f}x Med) | TakerBuy:"
-        f" {taker_buy_pct:.1f}%{zone_str}"
-    )
-    print(console_output, flush=True)
+      # Формируем наглядную строку вывода
+      console_output = (
+          f"[{local_output_time.strftime('%Y-%m-%d %H:%M')} |"
+          f" {minutes_passed}m/60m] BTC: {c_close:.1f} ({live_price_pct:+.2f}%)"
+          f" [H:{c_high:.1f}|L:{c_low:.1f}] | dOI: {live_oi_pct:+.2f}%"
+          f" ({oi_ratio:.2f}x Med) | Spd: {oi_speed_ratio:.2f}x Med | Vol:"
+          f" {c_volume:.0f} (Proj: {projected_vol_ratio:.2f}x Med) | TakerBuy:"
+          f" {taker_buy_pct:.1f}%{zone_str}"
+      )
+      print(console_output, flush=True)
+
 
   def start_loop(self):
     print(f"🚀 Запуск мониторинга {self.symbol}... Ожидание сетки времени...")

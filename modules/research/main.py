@@ -115,23 +115,34 @@ def main():
 
   print_header("LIVE MARKET MONITOR ACTIVATED")
 
-  # 🔥 МГНОВЕННЫЙ ПЕРВЫЙ ВЫВОД при запуске скрипта
-  printer.process_step()
+  # Первичный запуск: печатаем сразу, только если сейчас не 0-я минута часа
+  if datetime.now().minute % 10 == 0 and datetime.now().minute != 0:
+    printer.process_step()
 
   last_baseline_update = time.time()
-  last_printed_minute = datetime.now().minute
+  last_printed_minute = -1
 
   while True:
     try:
       now_dt = datetime.now()
       current_minute = now_dt.minute
 
-      # Печать каждые 10 минут (00, 10, 20, 30, 40, 50)
-      if current_minute % 10 == 0 and current_minute != last_printed_minute:
+      # 1. Проверка на закрытие часа (проверяем каждую минуту, чтобы не пропустить ИТОГ ЧАСА)
+      # process_step сам выведет ИТОГ ЧАСА, если сменилась свеча
+      if current_minute == 0 and current_minute != last_printed_minute:
         printer.process_step()
         last_printed_minute = current_minute
 
-      # Проверка недельного обновления
+      # 2. Печать промежуточных логов СТРОГО на 10, 20, 30, 40, 50 минутах
+      elif (
+          current_minute % 10 == 0
+          and current_minute != 0
+          and current_minute != last_printed_minute
+      ):
+        printer.process_step()
+        last_printed_minute = current_minute
+
+      # 3. Проверка недельного обновления
       current_time = time.time()
       if current_time - last_baseline_update >= BASELINE_UPDATE_INTERVAL:
         run_baseline()
@@ -145,7 +156,6 @@ def main():
       print(f"❌ Error in main loop: {e}")
       traceback.print_exc()
       time.sleep(15)
-
 
 if __name__ == "__main__":
     try:
