@@ -1,0 +1,38 @@
+[
+  {
+    "entry_time": "2026-08-15T15:00:00",
+    "entry_price": 63015.6,
+    "direction": "LONG",
+    "tp_price": 63515.6,
+    "sl_price": 62715.6,
+    "exit_time": "2026-08-17T11:00:00",
+    "exit_price": 63515.6,
+    "result": "TP",
+    "pnl_percent": 7.78,
+    "holding_hours": 44.0
+  },
+  {
+    "entry_time": "2026-08-17T13:00:00",
+    "entry_price": 63350.1,
+    "direction": "LONG",
+    "tp_price": 63850.1,
+    "sl_price": 63050.1,
+    "exit_time": "2026-08-17T19:00:00",
+    "exit_price": 63850.1,
+    "result": "TP",
+    "pnl_percent": 7.73,
+    "holding_hours": 6.0
+  },
+  {
+    "entry_time": "2026-08-17T23:00:00",
+    "entry_price": 63111.3,
+    "direction": "LONG",
+    "tp_price": 63611.3,
+    "sl_price": 62811.3,
+    "exit_time": "2026-08-18T00:00:00",
+    "exit_price": 63611.3,
+    "result": "TP",
+    "pnl_percent": 7.76,
+    "holding_hours": 1.0
+  }
+]

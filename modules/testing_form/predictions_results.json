@@ -1,0 +1,1534 @@
+[
+  {
+    "timestamp": "2026-08-15T15:00:00",
+    "price": 63015.6,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62385.443999999996,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.035705444366156955,
+    "is_correct": true,
+    "target_accuracy": 99.02596509531935,
+    "volume_ratio": 0.15372667260558717,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T16:00:00",
+    "price": 62993.1,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62363.168999999994,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.056672873695697415,
+    "is_correct": false,
+    "target_accuracy": 98.93265366293363,
+    "volume_ratio": 0.1742844742913269,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T17:00:00",
+    "price": 63028.8,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62398.512,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.003966440738202219,
+    "is_correct": false,
+    "target_accuracy": 98.98589248410282,
+    "volume_ratio": 0.29169236391877384,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T18:00:00",
+    "price": 63031.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62400.987,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.031095661996509386,
+    "is_correct": true,
+    "target_accuracy": 99.02130874949142,
+    "volume_ratio": 0.2683935220082688,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T19:00:00",
+    "price": 63011.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62381.583,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.08934848607481295,
+    "is_correct": false,
+    "target_accuracy": 98.89964799386382,
+    "volume_ratio": 0.18227917494689236,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T20:00:00",
+    "price": 63068.0,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62437.32,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.002695503266311108,
+    "is_correct": true,
+    "target_accuracy": 98.99262172047102,
+    "volume_ratio": 0.24121153977934628,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T21:00:00",
+    "price": 63066.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62435.637,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.03615243006170159,
+    "is_correct": true,
+    "target_accuracy": 99.02641659602192,
+    "volume_ratio": 0.2281915987117111,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-15T22:00:00",
+    "price": 63043.5,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62413.065,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.07946893811415696,
+    "is_correct": false,
+    "target_accuracy": 98.90962733523823,
+    "volume_ratio": 0.12426049018936021,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T00:00:00",
+    "price": 63093.6,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62462.664,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.026151622351553883,
+    "is_correct": true,
+    "target_accuracy": 99.01631477005208,
+    "volume_ratio": 0.20512117681993652,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T01:00:00",
+    "price": 63077.1,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62446.329,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.07387784156214941,
+    "is_correct": false,
+    "target_accuracy": 98.91527490751298,
+    "volume_ratio": 0.10964160899061194,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T02:00:00",
+    "price": 63123.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62492.462999999996,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.036436393937617724,
+    "is_correct": true,
+    "target_accuracy": 99.02670342821982,
+    "volume_ratio": 0.18068023481577927,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T03:00:00",
+    "price": 63100.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62469.693,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.07416716454808843,
+    "is_correct": true,
+    "target_accuracy": 99.06481531772535,
+    "volume_ratio": 0.15509719271796982,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T04:00:00",
+    "price": 63053.9,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62423.361000000004,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.004440645225755917,
+    "is_correct": true,
+    "target_accuracy": 98.99438449012703,
+    "volume_ratio": 0.17017291395417897,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T05:00:00",
+    "price": 63051.1,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62420.589,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.0003172030305646778,
+    "is_correct": false,
+    "target_accuracy": 98.9895785827974,
+    "volume_ratio": 0.16788871376687453,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T06:00:00",
+    "price": 63051.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62420.787000000004,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.06502641499858051,
+    "is_correct": false,
+    "target_accuracy": 98.92421574242567,
+    "volume_ratio": 0.23687155942346788,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T07:00:00",
+    "price": 63092.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62461.377,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.0068154117063344245,
+    "is_correct": false,
+    "target_accuracy": 98.98301473565016,
+    "volume_ratio": 0.3572489092944106,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T08:00:00",
+    "price": 63096.6,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62465.634,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.06323637089795878,
+    "is_correct": true,
+    "target_accuracy": 99.05377411201815,
+    "volume_ratio": 0.1324836108636561,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T09:00:00",
+    "price": 63056.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62426.132999999994,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.04599035471250478,
+    "is_correct": true,
+    "target_accuracy": 99.036353893649,
+    "volume_ratio": 0.10964160899061194,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T10:00:00",
+    "price": 63027.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62397.422999999995,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.013962115070045251,
+    "is_correct": false,
+    "target_accuracy": 98.97579584336358,
+    "volume_ratio": 0.1665181936544919,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T11:00:00",
+    "price": 63036.5,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62406.135,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.0034900414838975667,
+    "is_correct": true,
+    "target_accuracy": 98.99342428432718,
+    "volume_ratio": 0.1566961328490829,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T12:00:00",
+    "price": 63034.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62403.957,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.00824947687211104,
+    "is_correct": false,
+    "target_accuracy": 98.98156618497767,
+    "volume_ratio": 0.11329632929029901,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T13:00:00",
+    "price": 63039.5,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62409.104999999996,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.13087032733444903,
+    "is_correct": true,
+    "target_accuracy": 99.12209123973176,
+    "volume_ratio": 0.12334681011443845,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T14:00:00",
+    "price": 62957.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62957.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.03526216306367376,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.3001439046118002,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T15:00:00",
+    "price": 62979.2,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62979.2,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.003016869061533737,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.2336736791612417,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T16:00:00",
+    "price": 62981.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62981.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.008415222979596912,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.18433495511546633,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T17:00:00",
+    "price": 62986.4,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62986.4,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.07890592254835503,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.1930149158272231,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T18:00:00",
+    "price": 63036.1,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62405.739,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.06726304450941835,
+    "is_correct": false,
+    "target_accuracy": 98.92195652069756,
+    "volume_ratio": 0.20809063706343225,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T19:00:00",
+    "price": 63078.5,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62447.715,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.055962015583761356,
+    "is_correct": false,
+    "target_accuracy": 98.93337170143054,
+    "volume_ratio": 0.2576577811279381,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T20:00:00",
+    "price": 63113.8,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62482.662000000004,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.1883898608545107,
+    "is_correct": false,
+    "target_accuracy": 98.79960620115706,
+    "volume_ratio": 0.2626830215400078,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T21:00:00",
+    "price": 63232.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62600.373,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.1613089429994291,
+    "is_correct": true,
+    "target_accuracy": 99.15283731616104,
+    "volume_ratio": 1.77436670549807,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T22:00:00",
+    "price": 63130.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62499.393,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.1653712060851443,
+    "is_correct": true,
+    "target_accuracy": 99.15694061220722,
+    "volume_ratio": 0.416409694145595,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-16T23:00:00",
+    "price": 63026.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62396.037000000004,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.08869313286674639,
+    "is_correct": false,
+    "target_accuracy": 98.90030996680127,
+    "volume_ratio": 0.2549167409031728,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T00:00:00",
+    "price": 63082.2,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62451.378,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.06531160929707126,
+    "is_correct": true,
+    "target_accuracy": 99.05587031242128,
+    "volume_ratio": 0.3561068092007584,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T01:00:00",
+    "price": 63041.0,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62410.59,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.2236639647213718,
+    "is_correct": true,
+    "target_accuracy": 99.21582218658723,
+    "volume_ratio": 0.3618173096690194,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T02:00:00",
+    "price": 62900.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62900.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.023847376788553257,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.030402704493022,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T03:00:00",
+    "price": 62885.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62885.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.014311839071320666,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.1041823705429545,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T04:00:00",
+    "price": 62876.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62876.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.01797188116292848,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.5920646885493045,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T05:00:00",
+    "price": 62887.3,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 62887.3,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.31278175402664304,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.7430503209301264,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T06:00:00",
+    "price": 63084.0,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62453.159999999996,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.4734956565848663,
+    "is_correct": false,
+    "target_accuracy": 98.51162054890418,
+    "volume_ratio": 1.3734895726261451,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T07:00:00",
+    "price": 63382.7,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62748.873,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.04275614639326791,
+    "is_correct": false,
+    "target_accuracy": 98.94671096323913,
+    "volume_ratio": 1.756778364055826,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T08:00:00",
+    "price": 63409.8,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63409.8,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.16164693785503187,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.9586788186116632,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T09:00:00",
+    "price": 63512.3,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63512.3,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.03826030548413915,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.0699193677333882,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T10:00:00",
+    "price": 63488.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63488.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.22854712701612673,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.7318577400123347,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T11:00:00",
+    "price": 63633.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63633.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.21938267976886017,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.129765412640764,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T12:00:00",
+    "price": 63493.5,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63493.5,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.22584989014623771,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.6500833733068366,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T13:00:00",
+    "price": 63350.1,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62716.598999999995,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.09471176841078388,
+    "is_correct": true,
+    "target_accuracy": 99.08556744283916,
+    "volume_ratio": 1.1352474930902945,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T14:00:00",
+    "price": 63290.1,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62657.199,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.5874536459888718,
+    "is_correct": false,
+    "target_accuracy": 98.39651146869811,
+    "volume_ratio": 0.6498549532881063,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T15:00:00",
+    "price": 63661.9,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63661.9,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.09723241059409389,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.447954498732269,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T16:00:00",
+    "price": 63600.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63600.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.11540880503144882,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.1656273555814431,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T17:00:00",
+    "price": 63526.6,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63526.6,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.1895269068390272,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.7277690216770598,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T18:00:00",
+    "price": 63647.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63647.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.3530409917199508,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.9036524360995,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T19:00:00",
+    "price": 63871.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 63871.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.4668734353399148,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.5685602686219422,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T20:00:00",
+    "price": 64169.9,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64169.9,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.13682427430929908,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 3.4212750405445536,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T21:00:00",
+    "price": 64082.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64082.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.3292651145951834,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.3474496904908748,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T22:00:00",
+    "price": 64293.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64293.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -1.8381443731908955,
+    "is_correct": false,
+    "target_accuracy": 100,
+    "volume_ratio": 2.935197240686174,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-17T23:00:00",
+    "price": 63111.3,
+    "prediction": {
+      "direction": "DOWN",
+      "target": 62480.187000000005,
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ]
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 1.8524416388190363,
+    "is_correct": false,
+    "target_accuracy": 97.11874581937471,
+    "volume_ratio": 0.28118504305717357,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T00:00:00",
+    "price": 64280.4,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64280.4,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.12492143794997485,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.8104342264556066,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T01:00:00",
+    "price": 64360.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64360.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.016158929284476677,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.5461522647844858,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T02:00:00",
+    "price": 64350.3,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64350.3,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.12835992994594558,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.3803193311861852,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T03:00:00",
+    "price": 64267.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64267.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.36783640926935535,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.537472304072729,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T04:00:00",
+    "price": 64504.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64504.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.22742740383944138,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.9847187007469336,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T05:00:00",
+    "price": 64357.4,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64357.4,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.2835726738494718,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.7081020580643688,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T06:00:00",
+    "price": 64174.9,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64174.9,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.1572265792389259,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.0084743826948994,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T07:00:00",
+    "price": 64074.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64074.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.11455504572837882,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.2003471984284704,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T08:00:00",
+    "price": 64147.4,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64147.4,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.05783554750465107,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.7734301834212751,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T09:00:00",
+    "price": 64184.5,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64184.5,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.02835575567309411,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.6788642956668723,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T10:00:00",
+    "price": 64202.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64202.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.14828036827112312,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.7517302816418832,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T11:00:00",
+    "price": 64297.9,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64297.9,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.1975181148995535,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.8079216062495718,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T12:00:00",
+    "price": 64170.9,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64170.9,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.1458605068652591,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.6850316361725942,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T13:00:00",
+    "price": 64264.5,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64264.5,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.19295256323475635,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.7763996436647709,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T14:00:00",
+    "price": 64140.5,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64140.5,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.04864321294657368,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.36798465017474136,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T15:00:00",
+    "price": 64171.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64171.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.2404486712990351,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.3275543068594532,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T16:00:00",
+    "price": 64326.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64326.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.20442744768833754,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.8150026268302155,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T17:00:00",
+    "price": 64194.5,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64194.5,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.010904360965503275,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.47853993924027505,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T18:00:00",
+    "price": 64187.5,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64187.5,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.7728919182083716,
+    "is_correct": false,
+    "target_accuracy": 100,
+    "volume_ratio": 1.868018913177551,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T19:00:00",
+    "price": 64683.6,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64683.6,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.21690196587698102,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 5.673724845245438,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T20:00:00",
+    "price": 64823.9,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64823.9,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.029618705446608988,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.3056488270632038,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T21:00:00",
+    "price": 64804.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64804.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.6203253776346469,
+    "is_correct": false,
+    "target_accuracy": 100,
+    "volume_ratio": 0.9452020375065672,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-18T23:00:00",
+    "price": 64402.7,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64402.7,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.16521046477864157,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 2.603531373489573,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T08:00:00",
+    "price": 64296.3,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64296.3,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.016952764000419084,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.6617327942620892,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T09:00:00",
+    "price": 64285.4,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64285.4,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.11868946914852037,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.48721989995203185,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T10:00:00",
+    "price": 64209.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64209.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.16508563427925327,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.529706023435894,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T11:00:00",
+    "price": 64315.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64315.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "DOWN",
+    "actual_change_pct": -0.07618739611693055,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 1.0358847849425525,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T12:00:00",
+    "price": 64266.1,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64266.1,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.18501200477390328,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.764064962653327,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T13:00:00",
+    "price": 64385.0,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64385.0,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.015997514949138637,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.8878686128052263,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  },
+  {
+    "timestamp": "2026-08-19T14:00:00",
+    "price": 64395.3,
+    "prediction": {
+      "direction": "FLAT",
+      "target": 64395.3,
+      "confidence": "LOW",
+      "signals": []
+    },
+    "actual_direction": "UP",
+    "actual_change_pct": 0.044413179222704983,
+    "is_correct": true,
+    "target_accuracy": 100,
+    "volume_ratio": 0.4260033349322735,
+    "oi_change": 0.0,
+    "taker_buy": 50.0
+  }
+]

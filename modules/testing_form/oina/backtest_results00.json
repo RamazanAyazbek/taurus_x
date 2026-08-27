@@ -1,0 +1,104 @@
+{
+  "config": {
+    "tp_points": 500,
+    "sl_points": 300,
+    "leverage": 10,
+    "commission_pct": 0.04,
+    "slippage_pct": 0.02,
+    "reverse": true
+  },
+  "statistics": {
+    "total_signals": 40,
+    "flat_signals": 36,
+    "trades": 4,
+    "skipped_signals": 0,
+    "winning": 3,
+    "losing": 1,
+    "tp": 3,
+    "sl": 1,
+    "manual": 0,
+    "total_pnl_percent": 14.98
+  },
+  "trades": [
+    {
+      "trade_number": 1,
+      "entry_time": "2026-08-15T15:00:00",
+      "entry_price": 63015.6,
+      "prediction": "DOWN",
+      "direction": "LONG",
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ],
+      "tp_price": 63515.6,
+      "sl_price": 62715.6,
+      "exit_time": "2026-08-17T02:00:00",
+      "exit_price": 62715.6,
+      "result": "SL",
+      "pnl_points": -300.0,
+      "net_pnl_points": -363.02,
+      "pnl_percent": -5.76,
+      "holding_hours": 35.0
+    },
+    {
+      "trade_number": 2,
+      "entry_time": "2026-08-17T06:00:00",
+      "entry_price": 63084.0,
+      "prediction": "DOWN",
+      "direction": "LONG",
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ],
+      "tp_price": 63584.0,
+      "sl_price": 62784.0,
+      "exit_time": "2026-08-17T11:00:00",
+      "exit_price": 63584.0,
+      "result": "TP",
+      "pnl_points": 500.0,
+      "net_pnl_points": 436.92,
+      "pnl_percent": 6.93,
+      "holding_hours": 5.0
+    },
+    {
+      "trade_number": 3,
+      "entry_time": "2026-08-17T13:00:00",
+      "entry_price": 63350.1,
+      "prediction": "DOWN",
+      "direction": "LONG",
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ],
+      "tp_price": 63850.1,
+      "sl_price": 63050.1,
+      "exit_time": "2026-08-17T19:00:00",
+      "exit_price": 63850.1,
+      "result": "TP",
+      "pnl_points": 500.0,
+      "net_pnl_points": 436.65,
+      "pnl_percent": 6.89,
+      "holding_hours": 6.0
+    },
+    {
+      "trade_number": 4,
+      "entry_time": "2026-08-17T23:00:00",
+      "entry_price": 63111.3,
+      "prediction": "DOWN",
+      "direction": "LONG",
+      "confidence": "MEDIUM",
+      "signals": [
+        "ZONE_RESISTANCE"
+      ],
+      "tp_price": 63611.3,
+      "sl_price": 62811.3,
+      "exit_time": "2026-08-18T00:00:00",
+      "exit_price": 63611.3,
+      "result": "TP",
+      "pnl_points": 500.0,
+      "net_pnl_points": 436.89,
+      "pnl_percent": 6.92,
+      "holding_hours": 1.0
+    }
+  ]
+}

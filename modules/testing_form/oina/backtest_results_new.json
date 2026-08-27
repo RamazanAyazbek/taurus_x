@@ -1,0 +1,37 @@
+{
+  "config": {
+    "leverage": 10,
+    "sl_points": 300,
+    "commission_pct": 0.04,
+    "slippage_pct": 0.02,
+    "min_score": 2,
+    "min_score_difference": 1,
+    "impulse_volume_ratio": 3.0,
+    "impulse_oi_threshold": 0.2,
+    "bullish_taker_threshold": 55,
+    "bearish_taker_threshold": 45,
+    "squeeze_volume_ratio": 5.0,
+    "squeeze_oi_threshold": -0.5,
+    "exhaustion_oi_threshold": -0.3,
+    "strong_move_pct": 2.0,
+    "trend_lookback": 3,
+    "exhaustion_confirmations": 2,
+    "stagnation_pct": 0.15
+  },
+  "strategy": {
+    "zones": false,
+    "reverse": false,
+    "static_sl": true,
+    "static_tp": false,
+    "dynamic_exit": "trend_exhaustion"
+  },
+  "statistics": {
+    "total_signals": 86,
+    "no_trade_signals": 86,
+    "trades": 0,
+    "winning": 0,
+    "losing": 0,
+    "total_pnl_percent": 0
+  },
+  "trades": []
+}
