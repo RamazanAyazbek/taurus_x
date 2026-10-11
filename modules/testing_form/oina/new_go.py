@@ -1,108 +1,96 @@
 import re
 import json
+import math
 from dataclasses import dataclass, asdict
 from datetime import datetime
-from typing import List, Optional, Dict
+from typing import List, Dict, Optional
 
 
 # ============================================================
-# CONFIG
+# CONFIGURATION
 # ============================================================
+
+LOG_FILE = "taurus_x_container.log"
+RESULT_FILE = "backtest_results.json"
+
 
 @dataclass
 class Config:
+    # -------------------------
+    # Risk
+    # -------------------------
+    sl_points: float = 500.0
+    leverage: float = 10.0
 
-    # Position
-    leverage: int = 10
-    sl_points: float = 300.0
+    # -------------------------
+    # ENTRY
+    # -------------------------
 
-    # Costs
-    commission_pct: float = 0.04
-    slippage_pct: float = 0.02
+    # Не слишком высокий порог.
+    # Алгоритм может войти даже при умеренном сигнале,
+    # если несколько факторов смотрят в одну сторону.
+    min_entry_score: float = 2.00
 
-    # --------------------------------------------------------
-    # SIGNAL
-    # --------------------------------------------------------
+    # Насколько один direction должен превосходить другой.
+    min_score_margin: float = 0.45
 
-    # Минимальное количество подтверждений
-    min_confirmations: int = 2
+    # Максимум одновременно одной позиции.
+    one_position_only: bool = True
 
-    # Для сильного сигнала
-    strong_confirmations: int = 4
+    # -------------------------
+    # PATH
+    # -------------------------
 
-    # --------------------------------------------------------
-    # MEDIAN MULTIPLIERS
-    # --------------------------------------------------------
+    path_hours_short: int = 3
+    path_hours_medium: int = 6
+    path_hours_long: int = 12
 
-    # Volume:
-    # 1.0 = медиана
-    # 2.0 = в 2 раза выше медианы
-    volume_normal: float = 1.0
-    volume_strong: float = 2.0
-    volume_extreme: float = 3.0
-
-    # Price:
-    # насколько движение должно быть относительно медианы
-    price_normal: float = 1.0
-    price_strong: float = 1.5
-
-    # OI
-    oi_normal: float = 1.0
-    oi_strong: float = 1.5
-
-    # --------------------------------------------------------
-    # TAKER BUY
-    # --------------------------------------------------------
-
-    taker_neutral_low: float = 48.0
-    taker_neutral_high: float = 52.0
-
-    taker_long: float = 53.0
-    taker_strong_long: float = 55.0
-
-    taker_short: float = 47.0
-    taker_strong_short: float = 45.0
-
-    # --------------------------------------------------------
+    # -------------------------
     # EXIT
-    # --------------------------------------------------------
+    # -------------------------
 
-    # Минимум часов до проверки истощения.
-    # Не закрываем позицию сразу после первого слабого часа.
-    min_hold_hours: int = 2
-
-    # Сколько признаков должно указывать на истощение.
+    # Сколько последовательных часов ухудшения
+    # нужно для выхода.
     exhaustion_confirmations: int = 2
 
-    # Price change около нуля
-    stagnation_multiplier: float = 0.5
+    # Насколько сильным должно быть противоположное
+    # движение для немедленного выхода.
+    reversal_score: float = 2.5
 
-    # Максимальный срок только как страховка.
-    # Это НЕ TP.
-    max_hold_hours: int = 48
+    # Минимальное количество часов позиции,
+    # чтобы не закрывать её слишком рано только
+    # из-за шума.
+    min_hold_hours: int = 1
+
+
+CONFIG = Config()
 
 
 # ============================================================
-# DATA
+# DATA STRUCTURES
 # ============================================================
 
 @dataclass
-class HourlyData:
+class Baseline:
+    timestamp: datetime
+    volume_median: float
+    oi_median: float
+    price_median: float
 
+
+@dataclass
+class HourData:
     timestamp: datetime
 
     open_price: float
     close_price: float
-
     high: float
     low: float
 
     price_change: float
-
     oi_change: float
 
     volume: float
-
     volume_ratio: float
 
     taker_buy: float
@@ -112,1595 +100,1242 @@ class HourlyData:
 
 @dataclass
 class Signal:
-
     direction: str
+    long_score: float
+    short_score: float
+    confidence: float
 
-    confidence: str
-
-    score_long: int
-
-    score_short: int
-
-    confirmations: List[str]
-
-    price_vs_median: float
-
-    oi_vs_median: float
-
-    volume_vs_median: float
-
-    trend_state: str
+    components: Dict[str, float]
+    explanation: List[str]
 
 
 @dataclass
-class Trade:
-
-    trade_number: int
-
-    entry_time: str
-    entry_price: float
-
+class Position:
     direction: str
 
-    confidence: str
-
-    score_long: int
-    score_short: int
-
-    entry_reasons: List[str]
+    entry_time: datetime
+    entry_price: float
 
     sl_price: float
 
-    exit_time: Optional[str] = None
-    exit_price: Optional[float] = None
+    highest_price: float
+    lowest_price: float
 
-    result: Optional[str] = None
+    hold_hours: int = 0
+
+    exit_time: Optional[datetime] = None
+    exit_price: Optional[float] = None
+    exit_reason: Optional[str] = None
 
     pnl_points: float = 0.0
     pnl_percent: float = 0.0
-
-    holding_hours: float = 0.0
-
-    max_favorable_points: float = 0.0
-    max_adverse_points: float = 0.0
+    leveraged_pnl_percent: float = 0.0
 
 
 # ============================================================
-# TAURUS BACKTEST
+# HELPER FUNCTIONS
 # ============================================================
 
-class TaurusBacktest:
+def clamp(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
 
-    def __init__(
-        self,
-        log_file: str,
-        config: Config
-    ):
 
-        self.log_file = log_file
-        self.config = config
+def sign(value: float) -> float:
+    if value > 0:
+        return 1.0
+    if value < 0:
+        return -1.0
+    return 0.0
 
-        self.data: List[HourlyData] = []
 
-        self.volume_median = 0.0
-        self.oi_median = 0.0
-        self.price_median = 0.0
+def safe_ratio(value: float, median: float) -> float:
+    if median <= 0:
+        return 0.0
+    return value / median
 
-        self.trades: List[Trade] = []
 
-        self.total_decisions = 0
-        self.no_trade = 0
+# ============================================================
+# PARSER
+# ============================================================
 
-    # ========================================================
-    # PARSE LOG
-    # ========================================================
+class TaurusLogParser:
 
-    def parse_log(self):
+    BASELINE_RE = re.compile(
+        r"Period:.*?\n"
+        r".*?Volume Median:\s*([\d.]+)"
+        r"\s*\|\s*dOI Median:\s*([\d.]+)%"
+        r"\s*\|\s*dPrice Median:\s*([\d.]+)%",
+        re.MULTILINE
+    )
 
+    # Старый / универсальный вариант:
+    #
+    # ⏰ ИТОГ ЧАСА (14:00): BULLISH |
+    # Изм: +0.14% (62908.6 -> 62999.1) |
+    # Range: [62890.2 - 63019.9] | Vol: 1726
+
+    HOUR_RE = re.compile(
+        r"(?P<date>\d{4}-\d{2}-\d{2}).*?"
+        r"⏰ ИТОГ ЧАСА"
+        r"(?: \[[^\]]+\]|\s*)"
+        r"\s*\((?P<time>\d{2}:\d{2})\)"
+        r"[^:]*:\s*"
+        r"(?P<sentiment>[^\|]+)"
+        r"\|\s*Изм:\s*(?P<price_change>[+-]?[\d.]+)%"
+        r"\s*\((?P<open>[\d.]+)\s*->\s*(?P<close>[\d.]+)\)"
+        r"\s*\|\s*Range:\s*\[(?P<low>[\d.]+)\s*-\s*(?P<high>[\d.]+)\]"
+        r"\s*\|\s*Vol:\s*(?P<volume>[\d.]+)",
+        re.MULTILINE
+    )
+
+    # Новый вариант:
+    #
+    # ⏰ ИТОГ ЧАСА [22:00-59]: BULLISH |
+    # Изм: +0.57% (...) |
+    # H/L ... | dOI: +0.17% (0.97x Med) |
+    # Vol: 8648 (1.98x Med) | TakerBuy: 61.7%
+
+    HOUR_NEW_RE = re.compile(
+        r"(?P<date>\d{4}-\d{2}-\d{2}).*?"
+        r"⏰ ИТОГ ЧАСА\s+\[(?P<time>\d{2}):\d{2}-\d{2}\]"
+        r"\s*:\s*(?P<sentiment>[^\|]+)"
+        r"\|\s*Изм:\s*(?P<price_change>[+-]?[\d.]+)%"
+        r"\s*\((?P<open>[\d.]+)\s*->\s*(?P<close>[\d.]+)\)"
+        r"\s*\|\s*"
+        r"(?:📊\s*)?"
+        r"\[H:(?P<high>[\d.]+)\s*\|\s*L:(?P<low>[\d.]+)\]"
+        r"\s*\|\s*dOI:\s*(?P<oi>[+-]?[\d.]+)%"
+        r".*?\|\s*Vol:\s*(?P<volume>[\d.]+)"
+        r".*?\|\s*TakerBuy:\s*(?P<taker>[\d.]+)%",
+        re.MULTILINE
+    )
+
+    def __init__(self, path: str):
+        self.path = path
+        self.baselines: List[Baseline] = []
+        self.hours: List[HourData] = []
+
+    def parse(self):
         print("🔍 Парсинг taurus_x_container.log...")
 
-        with open(
-            self.log_file,
-            "r",
-            encoding="utf-8"
-        ) as f:
-
+        with open(self.path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        # ----------------------------------------------------
-        # MEDIANS
-        # ----------------------------------------------------
+        self._parse_baselines(content)
+        self._parse_hours(content)
 
-        median_pattern = (
-            r"Volume Median:\s*([+-]?[\d.]+)"
-            r"\s*\|\s*dOI Median:\s*([+-]?[\d.]+)%"
-            r"\s*\|\s*dPrice Median:\s*([+-]?[\d.]+)%"
-        )
+        self.hours.sort(key=lambda x: x.timestamp)
 
-        median_match = re.search(
-            median_pattern,
-            content
-        )
+        # Удаляем возможные дубликаты.
+        unique = {}
 
-        if median_match:
+        for item in self.hours:
+            unique[item.timestamp] = item
 
-            self.volume_median = float(
-                median_match.group(1)
+        self.hours = list(unique.values())
+        self.hours.sort(key=lambda x: x.timestamp)
+
+        print(f"✅ Baselines: {len(self.baselines)}")
+        print(f"✅ Найдено {len(self.hours)} часовых данных")
+
+    # --------------------------------------------------------
+    # BASELINES
+    # --------------------------------------------------------
+
+    def _parse_baselines(self, content: str):
+
+        for match in self.BASELINE_RE.finditer(content):
+
+            date_match = re.search(
+                r"(\d{4}-\d{2}-\d{2})",
+                content[max(0, match.start() - 100):match.start()]
             )
 
-            self.oi_median = abs(
-                float(median_match.group(2))
-            )
-
-            self.price_median = abs(
-                float(median_match.group(3))
-            )
-
-        else:
-
-            print(
-                "⚠️ Медианы не найдены!"
-            )
-
-        print()
-        print("📊 MEDIANS")
-        print(
-            f"   Volume Median: "
-            f"{self.volume_median:.4f}"
-        )
-        print(
-            f"   dOI Median: "
-            f"{self.oi_median:.4f}%"
-        )
-        print(
-            f"   dPrice Median: "
-            f"{self.price_median:.4f}%"
-        )
-
-        # ----------------------------------------------------
-        # HOURLY DATA
-        # ----------------------------------------------------
-
-        hour_pattern = (
-            r"⏰ ИТОГ ЧАСА "
-            r"\((\d{2}:\d{2})\): "
-            r"([^|]+)"
-            r"\|\s*Изм:\s*"
-            r"([+-]?[\d.]+)%\s*"
-            r"\(([\d.]+)\s*->\s*([\d.]+)\)"
-            r"\s*\|\s*Range:\s*"
-            r"\[([\d.]+)\s*-\s*([\d.]+)\]"
-            r"\s*\|\s*Vol:\s*([\d.]+)"
-        )
-
-        date_pattern = r"(\d{4}-\d{2}-\d{2})"
-
-        current_date = None
-
-        matches = list(
-            re.finditer(
-                hour_pattern,
-                content
-            )
-        )
-
-        for match in matches:
-
-            pos = match.start()
-
-            dates = re.findall(
-                date_pattern,
-                content[:pos]
-            )
-
-            if dates:
-
-                current_date = dates[-1]
-
-            if not current_date:
-
+            if not date_match:
                 continue
 
-            hour = match.group(1)
+            date = date_match.group(1)
 
-            sentiment = (
-                match.group(2)
-                .strip()
-            )
+            try:
+                timestamp = datetime.strptime(
+                    date,
+                    "%Y-%m-%d"
+                )
 
-            price_change = float(
-                match.group(3)
-            )
+                self.baselines.append(
+                    Baseline(
+                        timestamp=timestamp,
+                        volume_median=float(match.group(1)),
+                        oi_median=float(match.group(2)),
+                        price_median=float(match.group(3)),
+                    )
+                )
 
-            open_price = float(
-                match.group(4)
-            )
+            except Exception:
+                continue
 
-            close_price = float(
-                match.group(5)
-            )
+        self.baselines.sort(key=lambda x: x.timestamp)
 
-            low = float(
-                match.group(6)
-            )
+    # --------------------------------------------------------
+    # FIND BASELINE FOR HOUR
+    # --------------------------------------------------------
 
-            high = float(
-                match.group(7)
-            )
+    def _get_baseline(self, timestamp: datetime) -> Baseline:
 
-            volume = float(
-                match.group(8)
-            )
+        selected = None
 
-            timestamp = datetime.strptime(
-                f"{current_date} {hour}",
-                "%Y-%m-%d %H:%M"
-            )
+        for baseline in self.baselines:
 
-            # ------------------------------------------------
-            # OI
-            #
-            # ВАЖНО:
-            # ищем OI непосредственно рядом
-            # с соответствующим часом.
-            # ------------------------------------------------
-
-            oi_change = self.extract_oi(
-                content,
-                pos,
-                hour
-            )
-
-            # ------------------------------------------------
-            # TAKER BUY
-            # ------------------------------------------------
-
-            taker_buy = self.extract_taker(
-                content,
-                pos,
-                hour
-            )
-
-            # ------------------------------------------------
-            # VOLUME RATIO
-            # ------------------------------------------------
-
-            volume_ratio = (
-                volume / self.volume_median
-                if self.volume_median > 0
-                else 0.0
-            )
-
-            # ------------------------------------------------
-            # SENTIMENT
-            # ------------------------------------------------
-
-            if "BULLISH" in sentiment:
-
-                sentiment_type = "BULLISH"
-
-            elif "BEARISH" in sentiment:
-
-                sentiment_type = "BEARISH"
+            if baseline.timestamp <= timestamp:
+                selected = baseline
 
             else:
+                break
 
-                sentiment_type = "FLAT"
+        if selected:
+            return selected
 
-            self.data.append(
-                HourlyData(
+        # Fallback из твоего лога
+        return Baseline(
+            timestamp=timestamp,
+            volume_median=4377.9,
+            oi_median=0.177,
+            price_median=0.167,
+        )
 
+    # --------------------------------------------------------
+    # HOURLY DATA
+    # --------------------------------------------------------
+
+    def _parse_hours(self, content: str):
+
+        # Новый формат
+        for match in self.HOUR_NEW_RE.finditer(content):
+
+            try:
+
+                timestamp = datetime.strptime(
+                    f"{match.group('date')} {match.group('time')}",
+                    "%Y-%m-%d %H:%M"
+                )
+
+                sentiment = match.group("sentiment").strip()
+
+                hour = HourData(
                     timestamp=timestamp,
 
-                    open_price=open_price,
+                    open_price=float(match.group("open")),
+                    close_price=float(match.group("close")),
+                    high=float(match.group("high")),
+                    low=float(match.group("low")),
 
-                    close_price=close_price,
+                    price_change=float(match.group("price_change")),
 
-                    high=high,
+                    oi_change=float(match.group("oi")),
 
-                    low=low,
+                    volume=float(match.group("volume")),
 
-                    price_change=price_change,
+                    volume_ratio=0.0,
 
-                    oi_change=oi_change,
+                    taker_buy=float(match.group("taker")),
 
-                    volume=volume,
-
-                    volume_ratio=volume_ratio,
-
-                    taker_buy=taker_buy,
-
-                    sentiment=sentiment_type
+                    sentiment=sentiment,
                 )
-            )
 
-        self.data.sort(
-            key=lambda x: x.timestamp
-        )
+                baseline = self._get_baseline(timestamp)
 
-        print()
-        print(
-            f"✅ Найдено "
-            f"{len(self.data)} "
-            f"часовых данных"
-        )
+                hour.volume_ratio = safe_ratio(
+                    hour.volume,
+                    baseline.volume_median
+                )
 
-        # ----------------------------------------------------
-        # DATA DIAGNOSTICS
-        # ----------------------------------------------------
+                self.hours.append(hour)
 
-        self.print_data_diagnostics()
+            except Exception:
+                continue
+
+        # Старый формат
+        for match in self.HOUR_RE.finditer(content):
+
+            try:
+
+                timestamp = datetime.strptime(
+                    f"{match.group('date')} {match.group('time')}",
+                    "%Y-%m-%d %H:%M"
+                )
+
+                # Если уже нашли новый формат — не добавляем дубль.
+                if any(x.timestamp == timestamp for x in self.hours):
+                    continue
+
+                baseline = self._get_baseline(timestamp)
+
+                hour = HourData(
+                    timestamp=timestamp,
+
+                    open_price=float(match.group("open")),
+                    close_price=float(match.group("close")),
+                    high=float(match.group("high")),
+                    low=float(match.group("low")),
+
+                    price_change=float(match.group("price_change")),
+
+                    oi_change=0.0,
+
+                    volume=float(match.group("volume")),
+
+                    volume_ratio=safe_ratio(
+                        float(match.group("volume")),
+                        baseline.volume_median
+                    ),
+
+                    taker_buy=50.0,
+
+                    sentiment=match.group("sentiment").strip(),
+                )
+
+                self.hours.append(hour)
+
+            except Exception:
+                continue
+
+
+# ============================================================
+# TAURUS ENGINE
+# ============================================================
+
+class TaurusEngine:
+
+    """
+    Главный алгоритм.
+
+    ВАЖНО:
+
+    Никаких:
+        if X > 3: LONG
+        if Y < -0.2: SHORT
+
+    Здесь каждый фактор даёт вклад.
+
+    Итог:
+
+        LONG SCORE
+        SHORT SCORE
+
+    Потом сравниваем их.
+
+    Благодаря этому добавление нового фактора
+    не ломает основной алгоритм.
+    """
+
+    def __init__(self, config: Config):
+        self.config = config
 
     # ========================================================
-    # OI PARSER
+    # PUBLIC ENTRY
     # ========================================================
 
-    def extract_oi(
+    def analyze_entry(
         self,
-        content: str,
-        position: int,
-        hour: str
-    ) -> float:
-
-        start = max(
-            0,
-            position - 2000
-        )
-
-        end = min(
-            len(content),
-            position + 2000
-        )
-
-        block = content[start:end]
-
-        pattern = (
-            rf"\[{re.escape(hour)}\]"
-            r"[^\n]*?"
-            r"dOI:\s*"
-            r"([+-]?[\d.]+)%"
-        )
-
-        matches = re.findall(
-            pattern,
-            block
-        )
-
-        if not matches:
-
-            return 0.0
-
-        try:
-
-            return float(
-                matches[-1]
-            )
-
-        except ValueError:
-
-            return 0.0
-
-    # ========================================================
-    # TAKER PARSER
-    # ========================================================
-
-    def extract_taker(
-        self,
-        content: str,
-        position: int,
-        hour: str
-    ) -> float:
-
-        start = max(
-            0,
-            position - 3000
-        )
-
-        end = min(
-            len(content),
-            position + 3000
-        )
-
-        block = content[start:end]
-
-        pattern = (
-            rf"\[{re.escape(hour)}"
-            r"[^\]]*\]"
-            r"[^\n]*?"
-            r"TakerBuy:\s*"
-            r"([\d.]+)%"
-        )
-
-        matches = re.findall(
-            pattern,
-            block
-        )
-
-        if not matches:
-
-            return 50.0
-
-        try:
-
-            return float(
-                matches[-1]
-            )
-
-        except ValueError:
-
-            return 50.0
-
-    # ========================================================
-    # DIAGNOSTICS
-    # ========================================================
-
-    def print_data_diagnostics(self):
-
-        if not self.data:
-
-            return
-
-        oi_zero = sum(
-            1
-            for x in self.data
-            if x.oi_change == 0
-        )
-
-        taker_default = sum(
-            1
-            for x in self.data
-            if x.taker_buy == 50
-        )
-
-        print()
-        print("🔎 ПРОВЕРКА ДАННЫХ")
-        print(
-            f"   OI = 0: "
-            f"{oi_zero}/{len(self.data)}"
-        )
-
-        print(
-            f"   TakerBuy = 50: "
-            f"{taker_default}/{len(self.data)}"
-        )
-
-        print()
-        print(
-            "Последние 5 часов:"
-        )
-
-        for x in self.data[-5:]:
-
-            print(
-                f"   "
-                f"{x.timestamp} | "
-                f"{x.sentiment:<8} | "
-                f"Price: {x.price_change:+.3f}% | "
-                f"OI: {x.oi_change:+.3f}% | "
-                f"Vol: {x.volume_ratio:.2f}x | "
-                f"Taker: {x.taker_buy:.1f}%"
-            )
-
-    # ========================================================
-    # MEDIAN HELPERS
-    # ========================================================
-
-    def price_strength(
-        self,
-        data: HourlyData
-    ) -> float:
-
-        if self.price_median <= 0:
-
-            return 0.0
-
-        return (
-            abs(data.price_change)
-            /
-            self.price_median
-        )
-
-    def oi_strength(
-        self,
-        data: HourlyData
-    ) -> float:
-
-        if self.oi_median <= 0:
-
-            return 0.0
-
-        return (
-            abs(data.oi_change)
-            /
-            self.oi_median
-        )
-
-    # ========================================================
-    # SIGNAL ENGINE
-    #
-    # Здесь находится ВСЯ логика принятия решения.
-    #
-    # В будущем добавляем/удаляем правило именно здесь.
-    # Backtest при этом не меняется.
-    # ========================================================
-
-    def get_signal(
-        self,
+        data: List[HourData],
         index: int
     ) -> Signal:
 
-        current = self.data[index]
+        current = data[index]
 
-        previous = (
-            self.data[index - 1]
-            if index > 0
-            else None
-        )
-
-        long_score = 0
-        short_score = 0
-
-        reasons = []
-
-        # ====================================================
-        # MEDIAN RATIOS
-        # ====================================================
-
-        volume_vs_median = (
-            current.volume_ratio
-        )
-
-        price_vs_median = (
-            self.price_strength(current)
-        )
-
-        oi_vs_median = (
-            self.oi_strength(current)
-        )
-
-        # ====================================================
-        # RULE 1
-        # PRICE DIRECTION
-        #
-        # Сравниваем изменение цены
-        # с dPrice Median.
-        # ====================================================
-
-        price_above_median = (
-            price_vs_median
-            >= self.config.price_normal
-        )
-
-        if price_above_median:
-
-            if current.price_change > 0:
-
-                long_score += 1
-
-                reasons.append(
-                    "PRICE_ABOVE_MEDIAN_LONG"
-                )
-
-            elif current.price_change < 0:
-
-                short_score += 1
-
-                reasons.append(
-                    "PRICE_ABOVE_MEDIAN_SHORT"
-                )
-
-        # ====================================================
-        # RULE 2
-        # SENTIMENT
-        # ====================================================
-
-        if current.sentiment == "BULLISH":
-
-            long_score += 1
-
-            reasons.append(
-                "BULLISH_HOUR"
+        if index < 2:
+            return Signal(
+                direction="WAIT",
+                long_score=0,
+                short_score=0,
+                confidence=0,
+                components={},
+                explanation=["Недостаточно истории"]
             )
 
-        elif current.sentiment == "BEARISH":
+        history = data[:index + 1]
 
-            short_score += 1
+        components = {}
 
-            reasons.append(
-                "BEARISH_HOUR"
-            )
+        # ----------------------------------------------------
+        # 1. CURRENT PRICE MOMENTUM
+        # ----------------------------------------------------
 
-        # ====================================================
-        # RULE 3
-        # VOLUME
-        #
-        # Не требуем > 3x.
-        #
-        # Уже превышение медианы = подтверждение.
-        # 2x и 3x дают дополнительную силу.
-        # ====================================================
+        current_price_score = self._price_momentum(history)
 
-        if (
-            volume_vs_median
-            >= self.config.volume_normal
-        ):
+        components["price_momentum"] = current_price_score
 
-            if current.price_change > 0:
+        # ----------------------------------------------------
+        # 2. PATH
+        # ----------------------------------------------------
 
-                long_score += 1
+        path_score = self._price_path(history)
 
-                reasons.append(
-                    "VOLUME_ABOVE_MEDIAN_LONG"
-                )
+        components["price_path"] = path_score
 
-            elif current.price_change < 0:
+        # ----------------------------------------------------
+        # 3. TREND PERSISTENCE
+        # ----------------------------------------------------
 
-                short_score += 1
+        persistence_score = self._trend_persistence(history)
 
-                reasons.append(
-                    "VOLUME_ABOVE_MEDIAN_SHORT"
-                )
+        components["persistence"] = persistence_score
 
-        # Сильный объём
-        if (
-            volume_vs_median
-            >= self.config.volume_strong
-        ):
+        # ----------------------------------------------------
+        # 4. VOLUME
+        # ----------------------------------------------------
 
-            if current.price_change > 0:
+        volume_score = self._volume_confirmation(current)
 
-                long_score += 1
+        components["volume"] = volume_score
 
-                reasons.append(
-                    "STRONG_VOLUME_LONG"
-                )
+        # ----------------------------------------------------
+        # 5. OI
+        # ----------------------------------------------------
 
-            elif current.price_change < 0:
+        oi_score = self._oi_confirmation(current)
 
-                short_score += 1
+        components["oi"] = oi_score
 
-                reasons.append(
-                    "STRONG_VOLUME_SHORT"
-                )
+        # ----------------------------------------------------
+        # 6. TAKER BUY
+        # ----------------------------------------------------
 
-        # ====================================================
-        # RULE 4
-        # OI
-        #
-        # Смотрим направление изменения OI,
-        # но силу определяем относительно медианы.
-        # ====================================================
+        taker_score = self._taker_confirmation(current)
 
-        if (
-            oi_vs_median
-            >= self.config.oi_normal
-        ):
+        components["taker"] = taker_score
 
-            if current.oi_change > 0:
+        # ----------------------------------------------------
+        # 7. SENTIMENT
+        # ----------------------------------------------------
 
-                # Рост OI + рост цены
-                # = подтверждение LONG
+        sentiment_score = self._sentiment_score(current)
 
-                if current.price_change > 0:
+        components["sentiment"] = sentiment_score
 
-                    long_score += 1
+        # ----------------------------------------------------
+        # 8. ACCELERATION
+        # ----------------------------------------------------
 
-                    reasons.append(
-                        "OI_GROWTH_SUPPORTS_LONG"
-                    )
+        acceleration_score = self._acceleration(history)
 
-                # Рост OI + падение цены
-                # = подтверждение SHORT
+        components["acceleration"] = acceleration_score
 
-                elif current.price_change < 0:
+        # ----------------------------------------------------
+        # 9. WEIGHTED TOTAL
+        # ----------------------------------------------------
 
-                    short_score += 1
+        long_score = 0.0
+        short_score = 0.0
 
-                    reasons.append(
-                        "OI_GROWTH_SUPPORTS_SHORT"
-                    )
+        for name, score in components.items():
 
-            elif current.oi_change < 0:
+            # score:
+            #
+            # positive = LONG
+            # negative = SHORT
 
-                # Падение OI само по себе
-                # НЕ является автоматическим SHORT.
-                #
-                # Это важно.
-                #
-                # Старый код именно здесь
-                # создавал много противоречий.
+            if score > 0:
+                long_score += score
+            elif score < 0:
+                short_score += abs(score)
 
-                reasons.append(
-                    "OI_FALLING"
-                )
+        # ----------------------------------------------------
+        # Decision
+        # ----------------------------------------------------
 
-        # ====================================================
-        # RULE 5
-        # TAKER BUY
-        # ====================================================
+        difference = abs(long_score - short_score)
 
         if (
-            current.taker_buy
-            >= self.config.taker_long
+            max(long_score, short_score)
+            < self.config.min_entry_score
         ):
+            direction = "WAIT"
 
-            long_score += 1
+        elif difference < self.config.min_score_margin:
+            direction = "WAIT"
 
-            reasons.append(
-                "TAKER_BUY_LONG"
-            )
-
-        elif (
-            current.taker_buy
-            <= self.config.taker_short
-        ):
-
-            short_score += 1
-
-            reasons.append(
-                "TAKER_BUY_SHORT"
-            )
-
-        # ====================================================
-        # RULE 6
-        # STRONG TAKER
-        # ====================================================
-
-        if (
-            current.taker_buy
-            >= self.config.taker_strong_long
-        ):
-
-            long_score += 1
-
-            reasons.append(
-                "STRONG_TAKER_LONG"
-            )
-
-        elif (
-            current.taker_buy
-            <= self.config.taker_strong_short
-        ):
-
-            short_score += 1
-
-            reasons.append(
-                "STRONG_TAKER_SHORT"
-            )
-
-        # ====================================================
-        # RULE 7
-        # PREVIOUS MOMENTUM
-        #
-        # Смотрим не только текущий час,
-        # но и предыдущий.
-        #
-        # Это позволяет увидеть,
-        # что движение уже началось.
-        # ====================================================
-
-        if previous:
-
-            if (
-                previous.price_change
-                > self.price_median
-            ):
-
-                if current.price_change > 0:
-
-                    long_score += 1
-
-                    reasons.append(
-                        "CONTINUED_BULLISH_MOMENTUM"
-                    )
-
-            elif (
-                previous.price_change
-                < -self.price_median
-            ):
-
-                if current.price_change < 0:
-
-                    short_score += 1
-
-                    reasons.append(
-                        "CONTINUED_BEARISH_MOMENTUM"
-                    )
-
-        # ====================================================
-        # FINAL DIRECTION
-        # ====================================================
-
-        difference = abs(
-            long_score -
-            short_score
-        )
-
-        if (
-            long_score
-            >= self.config.min_confirmations
-            and
-            long_score > short_score
-            and
-            difference >= 1
-        ):
-
+        elif long_score > short_score:
             direction = "LONG"
 
-        elif (
-            short_score
-            >= self.config.min_confirmations
-            and
-            short_score > long_score
-            and
-            difference >= 1
-        ):
-
+        else:
             direction = "SHORT"
 
-        else:
+        total = long_score + short_score
 
-            direction = "FLAT"
-
-        # ====================================================
-        # CONFIDENCE
-        # ====================================================
-
-        best_score = max(
-            long_score,
-            short_score
+        confidence = (
+            difference / total
+            if total > 0
+            else 0
         )
 
-        if best_score >= self.config.strong_confirmations:
+        confidence = clamp(confidence, 0, 1)
 
-            confidence = "HIGH"
-
-        elif best_score >= 3:
-
-            confidence = "MEDIUM"
-
-        elif best_score >= 2:
-
-            confidence = "LOW"
-
-        else:
-
-            confidence = "NONE"
-
-        # ====================================================
-        # TREND STATE
-        # ====================================================
-
-        if direction == "LONG":
-
-            if best_score >= 4:
-
-                trend_state = "STRONG_BULLISH"
-
-            else:
-
-                trend_state = "BULLISH"
-
-        elif direction == "SHORT":
-
-            if best_score >= 4:
-
-                trend_state = "STRONG_BEARISH"
-
-            else:
-
-                trend_state = "BEARISH"
-
-        else:
-
-            trend_state = "UNDEFINED"
+        explanation = self._build_explanation(
+            components,
+            direction
+        )
 
         return Signal(
-
             direction=direction,
-
-            confidence=confidence,
-
-            score_long=long_score,
-
-            score_short=short_score,
-
-            confirmations=reasons,
-
-            price_vs_median=price_vs_median,
-
-            oi_vs_median=oi_vs_median,
-
-            volume_vs_median=volume_vs_median,
-
-            trend_state=trend_state
+            long_score=round(long_score, 4),
+            short_score=round(short_score, 4),
+            confidence=round(confidence, 4),
+            components={
+                k: round(v, 4)
+                for k, v in components.items()
+            },
+            explanation=explanation
         )
+
+    # ========================================================
+    # PRICE MOMENTUM
+    # ========================================================
+
+    def _price_momentum(
+        self,
+        history: List[HourData]
+    ) -> float:
+
+        current = history[-1]
+
+        # Последний час
+        p1 = current.price_change
+
+        # Нормализуем относительно медианы dPrice.
+        # Берём baseline непосредственно из самого лога.
+        #
+        # Здесь медиана примерно 0.167%, поэтому
+        # +0.5% уже заметное движение,
+        # +2% — экстремальное.
+
+        normalized = p1 / 0.167
+
+        return clamp(normalized * 0.35, -1.2, 1.2)
+
+    # ========================================================
+    # PRICE PATH
+    # ========================================================
+
+    def _price_path(
+        self,
+        history: List[HourData]
+    ) -> float:
+
+        if len(history) < 3:
+            return 0.0
+
+        short = history[-self.config.path_hours_short:]
+
+        medium = history[-self.config.path_hours_medium:]
+
+        long = history[-self.config.path_hours_long:]
+
+        short_change = (
+            short[-1].close_price - short[0].open_price
+        ) / short[0].open_price * 100
+
+        medium_change = (
+            medium[-1].close_price - medium[0].open_price
+        ) / medium[0].open_price * 100
+
+        long_change = (
+            long[-1].close_price - long[0].open_price
+        ) / long[0].open_price * 100
+
+        # Weighted path.
+        #
+        # Ближняя история важнее,
+        # но более длинный путь тоже учитывается.
+
+        score = (
+            short_change * 0.65
+            + medium_change * 0.30
+            + long_change * 0.15
+        )
+
+        # Нормализация.
+        score /= 0.35
+
+        return clamp(score, -1.8, 1.8)
+
+    # ========================================================
+    # TREND PERSISTENCE
+    # ========================================================
+
+    def _trend_persistence(
+        self,
+        history: List[HourData]
+    ) -> float:
+
+        if len(history) < 3:
+            return 0.0
+
+        window = history[-6:]
+
+        directional = 0
+
+        total_weight = 0
+
+        for i, candle in enumerate(window):
+
+            weight = i + 1
+
+            if candle.price_change > 0:
+                directional += weight
+
+            elif candle.price_change < 0:
+                directional -= weight
+
+            total_weight += weight
+
+        if total_weight == 0:
+            return 0.0
+
+        persistence = directional / total_weight
+
+        return persistence * 1.5
+
+    # ========================================================
+    # VOLUME
+    # ========================================================
+
+    def _volume_confirmation(
+        self,
+        current: HourData
+    ) -> float:
+
+        ratio = current.volume_ratio
+
+        # Не жёсткий порог.
+        #
+        # 0.5x -> почти нет подтверждения
+        # 1x   -> нормальный
+        # 2x   -> хороший
+        # 5x+  -> очень сильный
+
+        strength = math.log1p(max(ratio, 0))
+
+        strength = clamp(
+            strength / math.log1p(6),
+            0,
+            1
+        )
+
+        direction = sign(current.price_change)
+
+        return direction * strength * 1.35
+
+    # ========================================================
+    # OI
+    # ========================================================
+
+    def _oi_confirmation(
+        self,
+        current: HourData
+    ) -> float:
+
+        oi = current.oi_change
+
+        # dOI относительно типичного масштаба.
+        normalized = oi / 0.177
+
+        strength = clamp(
+            abs(normalized),
+            0,
+            3
+        )
+
+        # OI + price +:
+        #
+        # Цена растёт + OI растёт
+        # → движение подтверждается.
+        #
+        # Цена падает + OI растёт
+        # → тоже может подтверждать SHORT.
+        #
+        # Если OI падает при сильном движении,
+        # это может быть squeeze/liquidation,
+        # поэтому здесь НЕ делаем автоматический reverse.
+
+        direction = sign(current.price_change)
+
+        return direction * clamp(
+            strength * 0.30,
+            -0.9,
+            0.9
+        )
+
+    # ========================================================
+    # TAKER BUY
+    # ========================================================
+
+    def _taker_confirmation(
+        self,
+        current: HourData
+    ) -> float:
+
+        # 50 = нейтраль.
+        #
+        # 60 = умеренное преимущество покупателей.
+        # 70 = сильное.
+        #
+        # 40 = умеренное преимущество продавцов.
+
+        imbalance = (
+            current.taker_buy - 50
+        ) / 10
+
+        return clamp(
+            imbalance * 0.25,
+            -0.8,
+            0.8
+        )
+
+    # ========================================================
+    # SENTIMENT
+    # ========================================================
+
+    def _sentiment_score(
+        self,
+        current: HourData
+    ) -> float:
+
+        text = current.sentiment.upper()
+
+        if "BULL" in text:
+            return 0.35
+
+        if "BEAR" in text:
+            return -0.35
+
+        return 0.0
+
+    # ========================================================
+    # ACCELERATION
+    # ========================================================
+
+    def _acceleration(
+        self,
+        history: List[HourData]
+    ) -> float:
+
+        if len(history) < 3:
+            return 0.0
+
+        a = history[-3].price_change
+        b = history[-2].price_change
+        c = history[-1].price_change
+
+        # Изменение импульса.
+        acceleration = (
+            (b - a)
+            + (c - b)
+        )
+
+        return clamp(
+            acceleration / 0.25,
+            -1.0,
+            1.0
+        )
+
+    # ========================================================
+    # EXPLANATION
+    # ========================================================
+
+    def _build_explanation(
+        self,
+        components: Dict[str, float],
+        direction: str
+    ) -> List[str]:
+
+        result = []
+
+        sorted_components = sorted(
+            components.items(),
+            key=lambda x: abs(x[1]),
+            reverse=True
+        )
+
+        for name, value in sorted_components[:5]:
+
+            if abs(value) < 0.05:
+                continue
+
+            side = "LONG" if value > 0 else "SHORT"
+
+            result.append(
+                f"{name}: {side} {abs(value):.2f}"
+            )
+
+        if not result:
+            result.append("Недостаточно выраженного преимущества")
+
+        return result
+
+    # ========================================================
+    # POSITION MANAGEMENT
+    # ========================================================
+
+    def update_position(
+        self,
+        position: Position,
+        history: List[HourData],
+        current_index: int
+    ) -> Optional[Dict]:
+
+        current = history[current_index]
+
+        position.hold_hours += 1
+
+        position.highest_price = max(
+            position.highest_price,
+            current.high
+        )
+
+        position.lowest_price = min(
+            position.lowest_price,
+            current.low
+        )
+
+        # ----------------------------------------------------
+        # 1. STOP LOSS
+        # ----------------------------------------------------
+
+        if position.direction == "LONG":
+
+            if current.low <= position.sl_price:
+
+                return self._close_position(
+                    position,
+                    current.timestamp,
+                    position.sl_price,
+                    "SL"
+                )
+
+        else:
+
+            if current.high >= position.sl_price:
+
+                return self._close_position(
+                    position,
+                    current.timestamp,
+                    position.sl_price,
+                    "SL"
+                )
+
+        # ----------------------------------------------------
+        # 2. EXHAUSTION
+        # ----------------------------------------------------
+
+        if position.hold_hours >= self.config.min_hold_hours:
+
+            exit_signal = self._check_exhaustion(
+                position,
+                history,
+                current_index
+            )
+
+            if exit_signal:
+
+                return self._close_position(
+                    position,
+                    current.timestamp,
+                    current.close_price,
+                    exit_signal
+                )
+
+        return None
 
     # ========================================================
     # EXHAUSTION
     # ========================================================
 
-    def check_exhaustion(
+    def _check_exhaustion(
         self,
-        trade: Trade,
+        position: Position,
+        history: List[HourData],
         index: int
-    ):
+    ) -> Optional[str]:
 
-        current = self.data[index]
+        if index < 2:
+            return None
 
-        previous = (
-            self.data[index - 1]
-            if index > 0
-            else None
-        )
+        recent = history[
+            max(0, index - 2):index + 1
+        ]
 
-        confirmations = 0
-        reasons = []
+        adverse_count = 0
 
-        # ----------------------------------------------------
-        # PRICE
-        # ----------------------------------------------------
+        for candle in recent:
 
-        if previous:
+            if position.direction == "LONG":
 
-            if (
-                abs(current.price_change)
-                <=
-                self.price_median
-                *
-                self.config.stagnation_multiplier
-            ):
+                # Цена идёт против позиции.
+                if candle.price_change < -0.10:
+                    adverse_count += 1
 
-                confirmations += 1
+            else:
 
-                reasons.append(
-                    "PRICE_STAGNATION"
-                )
-
-        # ----------------------------------------------------
-        # OI
-        # ----------------------------------------------------
+                if candle.price_change > 0.10:
+                    adverse_count += 1
 
         if (
-            current.oi_change < 0
-            and
-            self.oi_median > 0
-            and
-            abs(current.oi_change)
-            >= self.oi_median
-        ):
-
-            confirmations += 1
-
-            reasons.append(
-                "OI_LOSS"
-            )
-
-        # ----------------------------------------------------
-        # TAKER
-        # ----------------------------------------------------
-
-        if trade.direction == "LONG":
-
-            if (
-                current.taker_buy
-                < self.config.taker_neutral_high
-            ):
-
-                confirmations += 1
-
-                reasons.append(
-                    "LONG_TAKER_WEAK"
-                )
-
-        else:
-
-            if (
-                current.taker_buy
-                > self.config.taker_neutral_low
-            ):
-
-                confirmations += 1
-
-                reasons.append(
-                    "SHORT_TAKER_WEAK"
-                )
-
-        # ----------------------------------------------------
-        # VOLUME
-        # ----------------------------------------------------
-
-        if (
-            current.volume_ratio
-            < self.config.volume_normal
-        ):
-
-            confirmations += 1
-
-            reasons.append(
-                "VOLUME_BELOW_MEDIAN"
-            )
-
-        # ----------------------------------------------------
-        # OPPOSITE PRICE
-        # ----------------------------------------------------
-
-        if trade.direction == "LONG":
-
-            if current.price_change < 0:
-
-                confirmations += 1
-
-                reasons.append(
-                    "PRICE_TURNED_DOWN"
-                )
-
-        else:
-
-            if current.price_change > 0:
-
-                confirmations += 1
-
-                reasons.append(
-                    "PRICE_TURNED_UP"
-                )
-
-        exhausted = (
-            confirmations
+            adverse_count
             >= self.config.exhaustion_confirmations
+        ):
+
+            return "TREND_EXHAUSTION"
+
+        # ----------------------------------------------------
+        # Сильный противоположный импульс
+        # ----------------------------------------------------
+
+        current = history[index]
+
+        opposite_score = self.analyze_entry(
+            history,
+            index
         )
 
-        return exhausted, reasons
+        if position.direction == "LONG":
 
-    # ========================================================
-    # SL
-    # ========================================================
-
-    def check_sl(
-        self,
-        trade: Trade,
-        candle: HourlyData
-    ):
-
-        if trade.direction == "LONG":
-
-            if candle.low <= trade.sl_price:
-
-                return True
+            if (
+                opposite_score.direction == "SHORT"
+                and opposite_score.short_score
+                >= self.config.reversal_score
+            ):
+                return "STRONG_REVERSAL"
 
         else:
 
-            if candle.high >= trade.sl_price:
+            if (
+                opposite_score.direction == "LONG"
+                and opposite_score.long_score
+                >= self.config.reversal_score
+            ):
+                return "STRONG_REVERSAL"
 
-                return True
-
-        return False
+        return None
 
     # ========================================================
     # CLOSE
     # ========================================================
 
-    def close_trade(
+    def _close_position(
         self,
-        trade: Trade,
-        candle: HourlyData,
-        result: str,
-        exit_price: float
-    ):
+        position: Position,
+        timestamp: datetime,
+        price: float,
+        reason: str
+    ) -> Dict:
 
-        if trade.direction == "LONG":
+        position.exit_time = timestamp
+        position.exit_price = price
+        position.exit_reason = reason
 
-            pnl_points = (
-                exit_price -
-                trade.entry_price
+        if position.direction == "LONG":
+
+            position.pnl_points = (
+                price - position.entry_price
             )
 
         else:
 
-            pnl_points = (
-                trade.entry_price -
-                exit_price
+            position.pnl_points = (
+                position.entry_price - price
             )
 
-        # ----------------------------------------------------
-        # COSTS
-        # ----------------------------------------------------
-
-        commission = (
-            trade.entry_price
-            *
-            self.config.commission_pct
-            / 100
-            *
-            2
+        position.pnl_percent = (
+            position.pnl_points
+            / position.entry_price
+            * 100
         )
 
-        slippage = (
-            trade.entry_price
-            *
-            self.config.slippage_pct
-            / 100
+        position.leveraged_pnl_percent = (
+            position.pnl_percent
+            * CONFIG.leverage
         )
 
-        net_points = (
-            pnl_points
-            -
-            commission
-            -
-            slippage
-        )
+        return asdict(position)
 
-        pnl_percent = (
-            net_points
-            /
-            trade.entry_price
-            *
-            100
-            *
-            self.config.leverage
-        )
 
-        entry_time = datetime.fromisoformat(
-            trade.entry_time
-        )
+# ============================================================
+# BACKTEST
+# ============================================================
 
-        holding_hours = (
-            candle.timestamp -
-            entry_time
-        ).total_seconds() / 3600
+class Backtester:
 
-        trade.exit_time = (
-            candle.timestamp.isoformat()
-        )
+    def __init__(
+        self,
+        data: List[HourData],
+        engine: TaurusEngine
+    ):
 
-        trade.exit_price = exit_price
+        self.data = data
+        self.engine = engine
 
-        trade.result = result
-
-        trade.pnl_points = pnl_points
-
-        trade.pnl_percent = pnl_percent
-
-        trade.holding_hours = holding_hours
-
-        self.trades.append(
-            trade
-        )
-
-        icon = (
-            "✅"
-            if pnl_percent > 0
-            else "❌"
-        )
-
-        print()
-        print(
-            f"{icon} ЗАКРЫТИЕ "
-            f"#{trade.trade_number}"
-        )
-
-        print(
-            f"   {result}"
-        )
-
-        print(
-            f"   Exit: "
-            f"{exit_price:.1f}"
-        )
-
-        print(
-            f"   PnL: "
-            f"{pnl_percent:+.2f}%"
-        )
-
-        print(
-            f"   Hold: "
-            f"{holding_hours:.1f}ч"
-        )
+        self.trades = []
+        self.signals = []
 
     # ========================================================
-    # BACKTEST
+    # RUN
     # ========================================================
 
     def run(self):
 
+        position: Optional[Position] = None
+
         print()
         print("=" * 80)
-        print(
-            "📊 TAURUS BACKTEST"
-        )
+        print("📊 TAURUS BACKTEST")
+        print("=" * 80)
+        print(f"SL: {CONFIG.sl_points} points")
+        print(f"Leverage: {CONFIG.leverage}x")
+        print("TP: DYNAMIC")
+        print("Zones: OFF")
+        print("Reverse: OFF")
         print("=" * 80)
 
-        print(
-            f"SL: "
-            f"{self.config.sl_points} points"
-        )
-
-        print(
-            f"TP: НЕТ"
-        )
-
-        print(
-            f"Exit: TREND EXHAUSTION"
-        )
-
-        print(
-            f"Leverage: "
-            f"{self.config.leverage}x"
-        )
-
-        print(
-            "Zones: OFF"
-        )
-
-        print(
-            "Reverse: OFF"
-        )
-
-        print("=" * 80)
-
-        i = 1
-
-        while i < len(self.data) - 1:
+        for i in range(1, len(self.data)):
 
             current = self.data[i]
 
-            signal = self.get_signal(i)
+            # =================================================
+            # POSITION
+            # =================================================
 
-            self.total_decisions += 1
+            if position:
 
-            # ------------------------------------------------
-            # PRINT DECISION
-            # ------------------------------------------------
+                result = self.engine.update_position(
+                    position,
+                    self.data,
+                    i
+                )
 
-            print()
-            print(
-                f"🕐 "
-                f"{current.timestamp} "
-                f"@ {current.close_price:.1f}"
-            )
+                if result:
 
-            print(
-                f"   "
-                f"Price: "
-                f"{current.price_change:+.3f}% "
-                f"(median "
-                f"{self.price_median:.3f}%)"
-            )
+                    self.trades.append(result)
 
-            print(
-                f"   "
-                f"Volume: "
-                f"{current.volume_ratio:.2f}x median"
-            )
+                    self._print_trade(result)
 
-            print(
-                f"   "
-                f"OI: "
-                f"{current.oi_change:+.3f}% "
-                f"(median "
-                f"{self.oi_median:.3f}%)"
-            )
+                    position = None
 
-            print(
-                f"   "
-                f"TakerBuy: "
-                f"{current.taker_buy:.1f}%"
-            )
-
-            print(
-                f"   "
-                f"Score: "
-                f"L={signal.score_long} "
-                f"S={signal.score_short}"
-            )
-
-            print(
-                f"   "
-                f"Decision: "
-                f"{signal.direction}"
-            )
-
-            # ------------------------------------------------
-            # NO TRADE
-            # ------------------------------------------------
-
-            if signal.direction == "FLAT":
-
-                self.no_trade += 1
-
-                i += 1
+                    # Важно:
+                    # после закрытия НЕ открываем новый ордер
+                    # на той же самой цене.
+                    continue
 
                 continue
 
-            # ------------------------------------------------
-            # OPEN
-            # ------------------------------------------------
+            # =================================================
+            # ENTRY
+            # =================================================
 
-            entry_price = (
-                current.close_price
+            signal = self.engine.analyze_entry(
+                self.data,
+                i
             )
+
+            self.signals.append({
+                "timestamp": current.timestamp.isoformat(),
+                "price": current.close_price,
+                "direction": signal.direction,
+                "long_score": signal.long_score,
+                "short_score": signal.short_score,
+                "confidence": signal.confidence,
+                "components": signal.components,
+                "explanation": signal.explanation,
+            })
+
+            if signal.direction == "WAIT":
+                continue
+
+            # -------------------------------------------------
+            # OPEN
+            # -------------------------------------------------
+
+            entry_price = current.close_price
 
             if signal.direction == "LONG":
 
-                sl_price = (
+                sl = (
                     entry_price
-                    -
-                    self.config.sl_points
+                    - CONFIG.sl_points
+                )
+
+                position = Position(
+                    direction="LONG",
+                    entry_time=current.timestamp,
+                    entry_price=entry_price,
+                    sl_price=sl,
+                    highest_price=entry_price,
+                    lowest_price=entry_price,
                 )
 
             else:
 
-                sl_price = (
+                sl = (
                     entry_price
-                    +
-                    self.config.sl_points
+                    + CONFIG.sl_points
                 )
 
-            trade = Trade(
+                position = Position(
+                    direction="SHORT",
+                    entry_time=current.timestamp,
+                    entry_price=entry_price,
+                    sl_price=sl,
+                    highest_price=entry_price,
+                    lowest_price=entry_price,
+                )
 
-                trade_number=
-                    len(self.trades) + 1,
-
-                entry_time=
-                    current.timestamp.isoformat(),
-
-                entry_price=
-                    entry_price,
-
-                direction=
-                    signal.direction,
-
-                confidence=
-                    signal.confidence,
-
-                score_long=
-                    signal.score_long,
-
-                score_short=
-                    signal.score_short,
-
-                entry_reasons=
-                    signal.confirmations.copy(),
-
-                sl_price=
-                    sl_price
+            self._print_entry(
+                position,
+                signal
             )
+
+        # =====================================================
+        # FORCE CLOSE LAST POSITION
+        # =====================================================
+
+        if position:
+
+            last = self.data[-1]
+
+            result = self.engine._close_position(
+                position,
+                last.timestamp,
+                last.close_price,
+                "END_OF_DATA"
+            )
+
+            self.trades.append(result)
 
             print()
             print(
-                "🟢 ОТКРЫТИЕ"
+                f"⚠️ Последняя сделка закрыта "
+                f"по последней доступной цене: "
+                f"{last.close_price}"
             )
-
-            print(
-                f"   "
-                f"#{trade.trade_number} "
-                f"{trade.direction}"
-            )
-
-            print(
-                f"   Entry: "
-                f"{entry_price:.1f}"
-            )
-
-            print(
-                f"   SL: "
-                f"{sl_price:.1f}"
-            )
-
-            print(
-                f"   Score: "
-                f"L={signal.score_long} "
-                f"S={signal.score_short}"
-            )
-
-            print(
-                f"   "
-                f"{signal.confidence} "
-                f"| "
-                f"{signal.trend_state}"
-            )
-
-            print(
-                f"   "
-                f"Reasons: "
-                f"{', '.join(signal.confirmations)}"
-            )
-
-            # ------------------------------------------------
-            # HOLD
-            # ------------------------------------------------
-
-            j = i + 1
-
-            closed = False
-
-            while j < len(self.data):
-
-                candle = self.data[j]
-
-                # ------------------------------------------------
-                # MFE / MAE
-                # ------------------------------------------------
-
-                if trade.direction == "LONG":
-
-                    favorable = (
-                        candle.high
-                        -
-                        trade.entry_price
-                    )
-
-                    adverse = (
-                        candle.low
-                        -
-                        trade.entry_price
-                    )
-
-                else:
-
-                    favorable = (
-                        trade.entry_price
-                        -
-                        candle.low
-                    )
-
-                    adverse = (
-                        trade.entry_price
-                        -
-                        candle.high
-                    )
-
-                trade.max_favorable_points = max(
-                    trade.max_favorable_points,
-                    favorable
-                )
-
-                trade.max_adverse_points = min(
-                    trade.max_adverse_points,
-                    adverse
-                )
-
-                # ------------------------------------------------
-                # SL FIRST
-                # ------------------------------------------------
-
-                if self.check_sl(
-                    trade,
-                    candle
-                ):
-
-                    self.close_trade(
-                        trade,
-                        candle,
-                        "SL",
-                        trade.sl_price
-                    )
-
-                    i = j + 1
-
-                    closed = True
-
-                    break
-
-                # ------------------------------------------------
-                # HOLD TIME
-                # ------------------------------------------------
-
-                entry_time = datetime.fromisoformat(
-                    trade.entry_time
-                )
-
-                holding_hours = (
-                    candle.timestamp -
-                    entry_time
-                ).total_seconds() / 3600
-
-                # ------------------------------------------------
-                # MAX TIME SAFETY
-                # ------------------------------------------------
-
-                if (
-                    holding_hours
-                    >= self.config.max_hold_hours
-                ):
-
-                    self.close_trade(
-                        trade,
-                        candle,
-                        "MAX_HOLD",
-                        candle.close_price
-                    )
-
-                    i = j + 1
-
-                    closed = True
-
-                    break
-
-                # ------------------------------------------------
-                # DON'T EXIT TOO EARLY
-                # ------------------------------------------------
-
-                if (
-                    holding_hours
-                    >= self.config.min_hold_hours
-                ):
-
-                    exhausted, reasons = (
-                        self.check_exhaustion(
-                            trade,
-                            j
-                        )
-                    )
-
-                    if exhausted:
-
-                        print(
-                            f"   🔥 "
-                            f"TREND EXHAUSTED:"
-                        )
-
-                        print(
-                            f"      "
-                            f"{', '.join(reasons)}"
-                        )
-
-                        self.close_trade(
-                            trade,
-                            candle,
-                            "TREND_EXHAUSTION",
-                            candle.close_price
-                        )
-
-                        i = j + 1
-
-                        closed = True
-
-                        break
-
-                j += 1
-
-            # ------------------------------------------------
-            # END OF DATA
-            # ------------------------------------------------
-
-            if not closed:
-
-                last = self.data[-1]
-
-                self.close_trade(
-                    trade,
-                    last,
-                    "END_OF_DATA",
-                    last.close_price
-                )
-
-                break
 
     # ========================================================
-    # STATISTICS
+    # PRINT ENTRY
     # ========================================================
 
-    def statistics(self):
+    def _print_entry(
+        self,
+        position: Position,
+        signal: Signal
+    ):
+
+        icon = (
+            "🟢"
+            if position.direction == "LONG"
+            else "🔴"
+        )
 
         print()
-        print("=" * 80)
         print(
-            "📊 ИТОГОВАЯ СТАТИСТИКА"
+            f"{icon} OPEN {position.direction}"
         )
-        print("=" * 80)
+
+        print(
+            f"   Вход: "
+            f"{position.entry_time} "
+            f"@ {position.entry_price:.2f}"
+        )
+
+        print(
+            f"   SL: {position.sl_price:.2f}"
+        )
+
+        print(
+            f"   Score: "
+            f"L={signal.long_score:.2f} "
+            f"S={signal.short_score:.2f}"
+        )
+
+        print(
+            f"   Confidence: "
+            f"{signal.confidence:.1%}"
+        )
+
+        if signal.explanation:
+
+            print(
+                "   Причины: "
+                + " | ".join(signal.explanation)
+            )
+
+    # ========================================================
+    # PRINT TRADE
+    # ========================================================
+
+    def _print_trade(
+        self,
+        trade: Dict
+    ):
+
+        pnl = trade["leveraged_pnl_percent"]
+
+        icon = "✅" if pnl >= 0 else "❌"
+
+        print(
+            f"{icon} CLOSE "
+            f"{trade['direction']} "
+            f"@ {trade['exit_price']:.2f} "
+            f"| {trade['exit_reason']} "
+            f"| PnL: {pnl:+.2f}% "
+            f"| {trade['hold_hours']}h"
+        )
+
+    # ========================================================
+    # RESULTS
+    # ========================================================
+
+    def summary(self):
 
         total = len(self.trades)
 
+        if total == 0:
+
+            print()
+            print("❌ Сделок нет")
+
+            return
+
+        wins = [
+            x for x in self.trades
+            if x["pnl_points"] > 0
+        ]
+
+        losses = [
+            x for x in self.trades
+            if x["pnl_points"] <= 0
+        ]
+
+        total_pnl = sum(
+            x["leveraged_pnl_percent"]
+            for x in self.trades
+        )
+
+        avg_pnl = (
+            total_pnl / total
+        )
+
+        print()
+        print("=" * 80)
+        print("📊 ИТОГОВАЯ СТАТИСТИКА")
+        print("=" * 80)
+
         print(
-            f"Решений: "
-            f"{self.total_decisions}"
+            f"Часовых данных: "
+            f"{len(self.data)}"
         )
 
         print(
-            f"NO TRADE: "
-            f"{self.no_trade}"
+            f"Сигналов: "
+            f"{len(self.signals)}"
         )
 
         print(
@@ -1708,216 +1343,140 @@ class TaurusBacktest:
             f"{total}"
         )
 
-        if not total:
-
-            print(
-                "❌ Сделок нет"
-            )
-
-            return
-
-        wins = sum(
-            1
-            for t in self.trades
-            if t.pnl_percent > 0
+        print(
+            f"Прибыльных: "
+            f"{len(wins)} "
+            f"({len(wins)/total:.1%})"
         )
 
-        losses = total - wins
-
-        sl_count = sum(
-            1
-            for t in self.trades
-            if t.result == "SL"
-        )
-
-        exhaustion_count = sum(
-            1
-            for t in self.trades
-            if t.result ==
-            "TREND_EXHAUSTION"
-        )
-
-        max_hold_count = sum(
-            1
-            for t in self.trades
-            if t.result ==
-            "MAX_HOLD"
-        )
-
-        total_pnl = sum(
-            t.pnl_percent
-            for t in self.trades
-        )
-
-        avg_pnl = (
-            total_pnl / total
-        )
-
-        avg_hold = (
-            sum(
-                t.holding_hours
-                for t in self.trades
-            )
-            /
-            total
+        print(
+            f"Убыточных: "
+            f"{len(losses)} "
+            f"({len(losses)/total:.1%})"
         )
 
         print()
 
         print(
-            f"WIN: "
-            f"{wins} "
-            f"({wins / total * 100:.1f}%)"
-        )
-
-        print(
-            f"LOSS: "
-            f"{losses} "
-            f"({losses / total * 100:.1f}%)"
-        )
-
-        print()
-
-        print(
-            f"SL: "
-            f"{sl_count}"
-        )
-
-        print(
-            f"TREND EXHAUSTION: "
-            f"{exhaustion_count}"
-        )
-
-        print(
-            f"MAX HOLD: "
-            f"{max_hold_count}"
-        )
-
-        print()
-
-        print(
-            f"💰 Total PnL: "
+            f"Общий PnL: "
             f"{total_pnl:+.2f}%"
         )
 
         print(
-            f"Average PnL: "
+            f"Средний PnL сделки: "
             f"{avg_pnl:+.2f}%"
         )
 
-        print(
-            f"Average holding: "
-            f"{avg_hold:.1f}ч"
-        )
+        if wins:
 
-        print()
-        print("=" * 80)
+            print(
+                f"Средняя прибыль: "
+                f"{sum(x['leveraged_pnl_percent'] for x in wins)/len(wins):+.2f}%"
+            )
 
-    # ========================================================
-    # SAVE
-    # ========================================================
+        if losses:
 
-    def save(
-        self,
-        filename="backtest_results.json"
-    ):
-
-        result = {
-
-            "config":
-                asdict(self.config),
-
-            "medians": {
-
-                "volume":
-                    self.volume_median,
-
-                "oi":
-                    self.oi_median,
-
-                "price":
-                    self.price_median
-            },
-
-            "strategy": {
-
-                "zones":
-                    False,
-
-                "reverse":
-                    False,
-
-                "static_sl":
-                    True,
-
-                "static_tp":
-                    False,
-
-                "dynamic_exit":
-                    "trend_exhaustion"
-            },
-
-            "statistics": {
-
-                "decisions":
-                    self.total_decisions,
-
-                "no_trade":
-                    self.no_trade,
-
-                "trades":
-                    len(self.trades),
-
-                "wins":
-                    sum(
-                        1
-                        for t in self.trades
-                        if t.pnl_percent > 0
-                    ),
-
-                "losses":
-                    sum(
-                        1
-                        for t in self.trades
-                        if t.pnl_percent <= 0
-                    ),
-
-                "total_pnl_percent":
-                    round(
-                        sum(
-                            t.pnl_percent
-                            for t in self.trades
-                        ),
-                        4
-                    )
-            },
-
-            "trades": [
-
-                asdict(t)
-
-                for t in self.trades
-            ]
-        }
-
-        with open(
-            filename,
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            json.dump(
-                result,
-                f,
-                indent=2,
-                ensure_ascii=False
+            print(
+                f"Средний убыток: "
+                f"{sum(x['leveraged_pnl_percent'] for x in losses)/len(losses):+.2f}%"
             )
 
         print()
+
+        long_trades = [
+            x for x in self.trades
+            if x["direction"] == "LONG"
+        ]
+
+        short_trades = [
+            x for x in self.trades
+            if x["direction"] == "SHORT"
+        ]
+
         print(
-            f"✅ Результаты сохранены: "
-            f"{filename}"
+            f"LONG: "
+            f"{len(long_trades)}"
         )
+
+        print(
+            f"SHORT: "
+            f"{len(short_trades)}"
+        )
+
+        print()
+
+        reasons = {}
+
+        for trade in self.trades:
+
+            reason = trade["exit_reason"]
+
+            reasons[reason] = (
+                reasons.get(reason, 0) + 1
+            )
+
+        print("Причины закрытия:")
+
+        for reason, count in reasons.items():
+
+            print(
+                f"  {reason}: {count}"
+            )
+
+        print("=" * 80)
+
+
+# ============================================================
+# SAVE
+# ============================================================
+
+def save_results(
+    parser: TaurusLogParser,
+    backtester: Backtester
+):
+
+    output = {
+
+        "config": asdict(CONFIG),
+
+        "data": {
+            "hours": len(parser.hours),
+            "first_timestamp": (
+                parser.hours[0].timestamp.isoformat()
+                if parser.hours
+                else None
+            ),
+            "last_timestamp": (
+                parser.hours[-1].timestamp.isoformat()
+                if parser.hours
+                else None
+            ),
+        },
+
+        "trades": backtester.trades,
+
+        "signals": backtester.signals,
+    }
+
+    with open(
+        RESULT_FILE,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            output,
+            f,
+            indent=2,
+            ensure_ascii=False,
+            default=str
+        )
+
+    print()
+    print(
+        f"✅ Результаты записаны: "
+        f"{RESULT_FILE}"
+    )
 
 
 # ============================================================
@@ -1926,93 +1485,43 @@ class TaurusBacktest:
 
 def main():
 
-    config = Config(
+    print("🚀 TAURUS BACKTEST ENGINE")
+    print()
 
-        leverage=10,
-
-        sl_points=300,
-
-        commission_pct=0.04,
-
-        slippage_pct=0.02,
-
-        # ----------------------------------------------------
-        # SIGNAL
-        # ----------------------------------------------------
-
-        min_confirmations=2,
-
-        strong_confirmations=4,
-
-        # ----------------------------------------------------
-        # MEDIAN
-        # ----------------------------------------------------
-
-        volume_normal=1.0,
-
-        volume_strong=2.0,
-
-        volume_extreme=3.0,
-
-        price_normal=1.0,
-
-        price_strong=1.5,
-
-        oi_normal=1.0,
-
-        oi_strong=1.5,
-
-        # ----------------------------------------------------
-        # TAKER
-        # ----------------------------------------------------
-
-        taker_neutral_low=48,
-
-        taker_neutral_high=52,
-
-        taker_long=53,
-
-        taker_strong_long=55,
-
-        taker_short=47,
-
-        taker_strong_short=45,
-
-        # ----------------------------------------------------
-        # EXIT
-        # ----------------------------------------------------
-
-        min_hold_hours=2,
-
-        exhaustion_confirmations=2,
-
-        stagnation_multiplier=0.5,
-
-        max_hold_hours=48
+    parser = TaurusLogParser(
+        LOG_FILE
     )
 
-    backtest = TaurusBacktest(
-        "taurus_x_container.log",
-        config
-    )
+    parser.parse()
 
-    backtest.parse_log()
-
-    if not backtest.data:
+    if len(parser.hours) < 10:
 
         print(
-            "❌ Нет данных для тестирования"
+            "❌ Недостаточно часовых данных "
+            "для backtest"
         )
 
         return
 
-    backtest.run()
+    engine = TaurusEngine(
+        CONFIG
+    )
 
-    backtest.statistics()
+    backtester = Backtester(
+        parser.hours,
+        engine
+    )
 
-    backtest.save()
+    backtester.run()
+
+    backtester.summary()
+
+    save_results(
+        parser,
+        backtester
+    )
 
 
 if __name__ == "__main__":
-
     main()
+

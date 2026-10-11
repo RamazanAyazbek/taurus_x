@@ -1,0 +1,2 @@
+﻿entry_time,exit_time,type,entry_price,exit_price,tp_price,sl_price,hold_minutes,pnl_pct,net_pnl_pct,result,exit_reason
+2026-08-20 20:10,2026-08-21 04:25,LONG,72114.2,73195.9,73195.9,71609.4,495,1.5,1.43,WIN,Take-Profit

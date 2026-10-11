@@ -1,0 +1,524 @@
+import re
+import json
+import urllib.request
+import pandas as pd
+from datetime import timedelta
+
+def find_exit(
+    df_klines,
+    entry_price,
+    signal_type,
+    tp_pct,
+    sl_pct,
+    max_hold_minutes=1080
+):
+
+    if signal_type == "LONG":
+        tp_price = round(entry_price * (1 + tp_pct / 100), 1)
+        sl_price = round(entry_price * (1 - sl_pct / 100), 1)
+    else:
+        tp_price = round(entry_price * (1 - tp_pct / 100), 1)
+        sl_price = round(entry_price * (1 + sl_pct / 100), 1)
+
+    entry_dt = df_klines.iloc[0]["dt"]
+
+    for j in range(1, len(df_klines)):
+
+        c = df_klines.iloc[j]
+
+        held_minutes = (
+                               c["dt"] - entry_dt
+                       ).total_seconds() / 60
+
+        if held_minutes >= max_hold_minutes:
+            return {
+                "status": "TIMEOUT",
+                "close_dt": c["dt"],
+                "close_local": c["dt"].tz_convert("Asia/Almaty"),
+                "price": c["close"],
+                "reason": "Max hold"
+            }
+
+        hi = c["high"]
+        lo = c["low"]
+
+        if signal_type == "LONG":
+            hit_tp = hi >= tp_price
+            hit_sl = lo <= sl_price
+        else:
+            hit_tp = lo <= tp_price
+            hit_sl = hi >= sl_price
+
+        if not (hit_tp or hit_sl):
+            continue
+
+        # Если TP и SL попали в одну минутную свечу —
+        # считаем это SL (консервативный вариант).
+        if hit_tp and hit_sl:
+            return {
+                "status": "LOSS",
+                "close_dt": c["dt"],
+                "close_local": c["dt"].tz_convert("Asia/Almaty"),
+                "price": sl_price,
+                "reason": "Same candle -> Conservative SL"
+            }
+
+
+        return {
+            "status": "WIN" if hit_tp else "LOSS",
+            "close_dt": c["dt"],
+            "close_local": c["dt"].tz_convert("Asia/Almaty"),
+            "price": tp_price if hit_tp else sl_price,
+            "reason": "Take-Profit" if hit_tp else "Stop-Loss"
+        }
+
+    return None
+
+def fetch_binance_klines_for_period(symbol="BTCUSDT", start_time_ms=None):
+    """
+    Загружает все минутные свечи начиная с start_time.
+    Ограничение Binance (1000 свечей) обходится автоматически.
+    """
+
+    all_rows=[]
+    current=start_time_ms
+
+    while True:
+
+        url=(
+            f"https://fapi.binance.com/fapi/v1/klines"
+            f"?symbol={symbol}&interval=1m&limit=1000"
+        )
+
+        if current:
+            url+=f"&startTime={int(current)}"
+
+        req=urllib.request.Request(
+            url,
+            headers={"User-Agent":"Mozilla/5.0"}
+        )
+
+        with urllib.request.urlopen(req) as response:
+            raw=json.loads(response.read().decode())
+
+        if not raw:
+            break
+
+        all_rows.extend(raw)
+
+        if len(raw)<1000:
+            break
+
+        current=raw[-1][0]+60000
+
+    df=pd.DataFrame([{
+        "dt": pd.to_datetime(c[0], unit="ms", utc=True),
+        "ts":pd.to_datetime(c[0],unit="ms").strftime("%Y-%m-%d %H:%M"),
+        "high":float(c[2]),
+        "low":float(c[3]),
+        "close":float(c[4])
+    } for c in all_rows])
+
+    return df.drop_duplicates(subset="dt").reset_index(drop=True)
+
+def parse_taurus_log(file_path):
+    data=[]
+    pattern=re.compile(
+        r'(?:(?P<log_date>\d{4}-\d{2}-\d{2})\s+)?'
+        r'\[(?P<timestamp>\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2})[^\]]*\]\s+'
+        r'BTC:\s+(?P<price>[\d\.]+)\s+\((?P<dPrice_str>[^)]+)\).*?'
+        r'dOI:\s+(?P<dOI_str>[%\d\.\+\-]+)(?:\s+\((?P<doi_xmed>[\d\.]+)x\s+Med\))?.*?'
+        r'Vol:\s+(?P<vol>\d+)(?:\s+\([^)]*?(?P<vol_xmed>[\d\.]+)x\s+Med\))?.*?'
+        r'TakerBuy:\s+(?P<taker_buy>[\d\.]+)%'
+    )
+
+    with open(file_path,"r",encoding="utf-8") as f:
+        for line in f:
+            m=pattern.search(line)
+            if not m:continue
+            try:
+                log_date=m.group("log_date")
+                ts_raw=m.group("timestamp")
+                ts=f"{log_date} {ts_raw.split()[-1]}" if log_date and not ts_raw.startswith(log_date) else ts_raw
+                tag_match=re.search(r"Tag:\s+([^\s\|]+)",line)
+                data.append({
+                    "timestamp":ts,
+                    "price":float(m.group("price")),
+                    "dPrice":float(m.group("dPrice_str").replace("%","").replace("+","")),
+                    "dOI":float(m.group("dOI_str").replace("%","").replace("+","")),
+                    "doi_xmed":float(m.group("doi_xmed")) if m.group("doi_xmed") else 1.0,
+                    "volume":float(m.group("vol")),
+                    "vol_xmed":float(m.group("vol_xmed")) if m.group("vol_xmed") else 1.0,
+                    "taker_buy":float(m.group("taker_buy")),
+                    "tag":tag_match.group(1) if tag_match else "NORMAL",
+                    "in_zone":line.split("🎯 IN:")[1].strip() if "🎯 IN:" in line else "NONE"
+                })
+            except:continue
+
+    df=pd.DataFrame(data)
+    if df.empty:return df
+    df["dt_local"] = pd.to_datetime(
+        df["timestamp"],
+        errors="coerce"
+    )
+
+    df["dt"] = (
+        df["dt_local"]
+        .dt.tz_localize("Asia/Almaty")
+        .dt.tz_convert("UTC")
+    )
+    return df.dropna(subset=["dt"]).sort_values("dt").reset_index(drop=True)
+
+def add_prev_hour_oi_features(df):
+    """
+    Добавляет:
+
+    doi_prev_hour         — dOI предыдущего завершенного часа
+    doi_impulse_change_60 — изменение силы OI относительно прошлого часа
+    """
+
+    if df.empty:
+        return df
+
+    df = df.copy()
+
+    prev_hour_values = []
+    last_completed_hour_doi = None
+
+    for _, row in df.iterrows():
+
+        # Для текущей строки используем последний завершенный час
+        prev_hour_values.append(last_completed_hour_doi)
+
+        # Если это строка полного часа (HH:00),
+        # обновляем значение для следующих строк
+        if row["dt"].minute == 0:
+            last_completed_hour_doi = row["dOI"]
+
+    df["doi_prev_hour"] = prev_hour_values
+
+    df["doi_impulse_change_60"] = (
+        df["dOI"] - df["doi_prev_hour"]
+    )
+
+    return df
+
+class TaurusRealisticStrictBacktester:
+    def __init__(self,tp_pct=1.5,sl_pct=0.7,be_pct=1.1,taker_fee=0.05,maker_fee=0.02):
+        self.tp_pct=tp_pct
+        self.sl_pct=sl_pct
+        self.be_pct=be_pct
+        self.taker_fee=taker_fee
+        self.maker_fee=maker_fee
+        self.trades=[]
+        self.max_hold_minutes = 1080
+
+    def run(self,df_logs,symbol="BTCUSDT"):
+        if df_logs.empty:
+            print("Датафрейм логов пуст.");return
+
+        last_closed_time=None
+        state_active = False
+
+        for i,curr in df_logs.iterrows():
+            curr_dt=curr["dt"]
+
+
+
+            if last_closed_time is not None and curr_dt<=last_closed_time:
+                continue
+
+            # --- предыдущее движение за 2h и 4h ---
+            prev_2h = df_logs[df_logs["dt"] <= curr_dt - timedelta(hours=2)].tail(1)
+            prev_4h = df_logs[df_logs["dt"] <= curr_dt - timedelta(hours=4)].tail(1)
+
+            previous_2h_return = (
+                ((curr["price"] - prev_2h.iloc[0]["price"]) / prev_2h.iloc[0]["price"] * 100)
+                if not prev_2h.empty else None
+            )
+
+            previous_4h_return = (
+                ((curr["price"] - prev_4h.iloc[0]["price"]) / prev_4h.iloc[0]["price"] * 100)
+                if not prev_4h.empty else None
+            )
+
+
+            # pass_volume_filter=curr["vol_xmed"]>=0.5 and curr["tag"]!="FLAT" and curr["volume"]>=7200
+            # pass_oi_filter=curr["doi_xmed"]<=6.0
+
+            pass_volume_filter = (
+                    curr["vol_xmed"] >= 0.5
+                    and curr["tag"] != "FLAT"
+                    and curr["volume"] >= 7200
+            )
+
+            pass_oi_filter = curr["doi_xmed"] <= 6.0
+            current_state = (
+                    pass_volume_filter
+                    and pass_oi_filter
+                    and curr["dOI"] >= 0.30
+                    and curr["vol_xmed"] >= 1.5
+            )
+
+            # Новый фильтр состояния OI
+            pass_oi_state = (
+                    pd.notna(curr["doi_prev_hour"])
+                    and curr["doi_impulse_change_60"] <= 0.20
+            )
+
+            # [ BLOCK ] -> decision-making unit (V4.2-A)
+            # signal_type = None
+            #
+            # if pass_volume_filter and pass_oi_filter:
+            #
+            #     if (
+            #             curr["dOI"] >= 0.30
+            #             and curr["vol_xmed"] >= 1.5
+            #     ):
+            #         signal_type = "LONG"
+
+            # [ BLOCK ] -> decision-making unit (V4.2-B)
+            # signal_type = None
+            #
+            # if pass_volume_filter and pass_oi_filter:
+            #
+            #     if (
+            #             curr["dOI"] >= 0.30
+            #             and curr["vol_xmed"] >= 1.5
+            #             and previous_4h_return is not None
+            #             and previous_4h_return <= 2.0
+            #     ):
+            #         signal_type = "LONG"
+
+            # [ BLOCK ] -> decision-making unit (V4.2-C)
+
+            # если состояние уже активно —
+            # повторный вход запрещён
+            if current_state and state_active:
+                continue
+
+            # если состояние исчезло —
+            # разрешаем следующий вход
+            if not current_state:
+                state_active = False
+
+            # [ BLOCK ] -> decision-making unit (V5)
+
+            signal_type = None
+
+            prev_30m = df_logs[
+                df_logs["dt"] <= curr_dt - timedelta(minutes=30)
+                ].tail(1)
+
+            previous_30m_return = (
+                (
+                        (curr["price"] - prev_30m.iloc[0]["price"])
+                        / prev_30m.iloc[0]["price"] * 100
+                )
+                if not prev_30m.empty
+                else None
+            )
+
+            if current_state:
+
+                if (
+                        previous_4h_return is not None
+                        and previous_4h_return <= 2.0
+
+                        and previous_2h_return is not None
+                        and previous_2h_return >= 0
+
+                        and previous_30m_return is not None
+                        and previous_30m_return <= 0.8
+
+                        and curr["taker_buy"] <= 64
+                ):
+                    signal_type = "LONG"
+            # signal_type=None
+            # if pass_volume_filter and pass_oi_filter:
+            #     if curr["dPrice"]>0.4 and curr["dOI"]>0 and 55<curr["taker_buy"]<=66:
+            #         if not(curr["dOI"]<-0.7 and curr["volume"]<20000):
+            #             signal_type="LONG"
+            #     elif curr["dPrice"]<-0.6 and curr["taker_buy"]<38:
+            #         if "S1" not in str(curr["in_zone"]) and "S2" not in str(curr["in_zone"]):
+            #             signal_type="SHORT"
+
+
+            # [ BLOCK ] ->  decision-making unit
+
+            # if pass_volume_filter and pass_oi_filter and pass_oi_state:
+            #
+            #     if (
+            #             curr["dPrice"] > 0.4
+            #             and curr["dOI"] > 0
+            #             and 55 < curr["taker_buy"] <= 66
+            #     ):
+            #
+            #         if not (
+            #                 curr["dOI"] < -0.7
+            #                 and curr["volume"] < 20000
+            #         ):
+            #             signal_type = "LONG"
+            #
+            #     elif (
+            #             curr["dPrice"] < -0.6
+            #             and curr["taker_buy"] < 38
+            #     ):
+            #
+            #         if (
+            #                 "S1" not in str(curr["in_zone"])
+            #                 and "S2" not in str(curr["in_zone"])
+            #         ):
+            #             signal_type = "SHORT"
+
+            if not signal_type:
+                continue
+
+            start_ms=int(curr_dt.timestamp()*1000)
+            df_klines=fetch_binance_klines_for_period(symbol,start_ms)
+
+            if df_klines.empty:
+                continue
+
+            entry_price=curr["price"]
+
+            if signal_type=="LONG":
+                tp_price=round(entry_price*(1+self.tp_pct/100),1)
+                sl_price=round(entry_price*(1-self.sl_pct/100),1)
+            else:
+                tp_price=round(entry_price*(1-self.tp_pct/100),1)
+                sl_price=round(entry_price*(1+self.sl_pct/100),1)
+
+            #---EXIT
+
+            exit_info = find_exit(
+                df_klines,
+                entry_price,
+                signal_type,
+                self.tp_pct,
+                self.sl_pct
+            )
+
+            if exit_info is None:
+                continue
+
+            if exit_info["status"] == "TIMEOUT":
+                exit_price = exit_info["price"]
+
+                pnl = (
+                        (exit_price - entry_price)
+                        / entry_price * 100
+                )
+
+                fee = self.taker_fee * 2
+
+                hold_minutes = int(
+                    (
+                            exit_info["close_dt"] - curr_dt
+                    ).total_seconds() / 60
+                )
+
+                self.trades.append({
+                    "entry_time": curr["timestamp"],
+                    "exit_time": exit_info["close_local"].strftime("%Y-%m-%d %H:%M"),
+                    "type": signal_type,
+                    "entry_price": entry_price,
+                    "exit_price": exit_price,
+                    "hold_minutes": hold_minutes,
+                    "net_pnl_pct": round(pnl - fee, 2),
+                    "result": "TIMEOUT",
+                    "exit_reason": "Max hold",
+
+                    "entry_dOI": curr["dOI"],
+                    "entry_dPrice": curr["dPrice"],
+                    "entry_volume": curr["volume"],
+                    "entry_taker_buy": curr["taker_buy"],
+                    "entry_zone": curr["in_zone"]
+                })
+
+                last_closed_time = exit_info["close_dt"]
+                state_active = True
+                continue
+
+            if exit_info["status"] == "AMBIGUOUS":
+                continue
+
+            exit_price = exit_info["price"]
+            hold_minutes = int(
+                (
+                        exit_info["close_dt"] - curr_dt
+                ).total_seconds() / 60
+            )
+
+            pnl = ((exit_price - entry_price) / entry_price * 100) \
+                if signal_type == "LONG" \
+                else ((entry_price - exit_price) / entry_price * 100)
+
+            fee = self.taker_fee + (
+                self.maker_fee
+                if exit_info["status"] == "WIN"
+                else self.taker_fee
+            )
+
+            self.trades.append({
+                "entry_time": curr["timestamp"],
+                "exit_time": exit_info["close_local"].strftime("%Y-%m-%d %H:%M"),
+
+                "type": signal_type,
+
+                "entry_price": entry_price,
+                "exit_price": exit_price,
+                "hold_minutes": hold_minutes,
+
+                "net_pnl_pct": round(pnl - fee, 2),
+
+                "result": exit_info["status"],
+                "exit_reason": exit_info["reason"],
+
+                # --- параметры рынка в момент входа ---
+                "entry_dOI": curr["dOI"],
+                "entry_dPrice": curr["dPrice"],
+                "entry_volume": curr["volume"],
+                "entry_taker_buy": curr["taker_buy"],
+                "entry_zone": curr["in_zone"]
+            })
+            last_closed_time = exit_info["close_dt"]
+            state_active = True
+
+
+    def export_analysis(self,output_csv="backtest_details_v4.4-C.csv"):
+        df=pd.DataFrame(self.trades)
+        if df.empty:
+            print("Сделок за указанный период не найдено.");return
+
+        wins=df[df.result=="WIN"]
+        losses=df[df.result=="LOSS"]
+
+        print("\n==================================================")
+        print("📊 СТАТИСТИКА СТРОГОГО БЭКТЕСТА (V4)")
+        print("==================================================")
+        print(f"Всего сделок            : {len(df)}")
+        print(f"WIN                     : {len(wins)}")
+        print(f"LOSS                    : {len(losses)}")
+        print(f"Winrate                 : {(len(wins)/(len(wins)+len(losses))*100 if len(wins)+len(losses) else 0):.1f}%")
+        # print(f"Грязный PnL             : {df.pnl_pct.sum():+.2f}%")
+        print(f"Чистый PnL              : {df.net_pnl_pct.sum():+.2f}%")
+        print("==================================================\n")
+
+        print(df[["entry_time","exit_time","type","entry_price","exit_price","net_pnl_pct","result","exit_reason"]].to_string(index=False))
+        df.to_csv(output_csv,index=False,encoding="utf-8-sig")
+        print(f"\n[+] Сохранено в файл: {output_csv}")
+
+
+if __name__=="__main__":
+    log_file="taurus_x_container.log"
+    try:
+        print("[1] Парсинг сигналов из лог-файла...")
+        df_logs=parse_taurus_log(log_file)
+        df_logs = add_prev_hour_oi_features(df_logs)
+        print("[2] Запуск бэктеста...")
+        tester=TaurusRealisticStrictBacktester(tp_pct=1.5,sl_pct=0.7,be_pct=1.1)
+        tester.run(df_logs)
+        tester.export_analysis()
+    except FileNotFoundError:
+        print(f"Файл {log_file} не найден.")
