@@ -1,0 +1,3 @@
+﻿signal_time,entry_time,exit_time,type,entry_price,exit_price,hold_minutes,net_pnl_pct,exit_reason,mfe_pct,mae_pct,mfe_time_min,mae_time_min,confirmation_delay_min,confirmation_move_pct,entry_dOI,entry_dPrice,entry_volume,entry_taker_buy,entry_zone
+2026-09-01 13:50,2026-09-01 14:00,2026-09-01 19:09,SHORT,77850.0,78394.9,309,-0.8,Stop-Loss,0.622,-0.703,246,309,10.0,-0.072,0.49,-0.95,12469.0,44.0,S1[77.7k-78.0k]
+2026-10-07 07:00,2026-10-07 07:10,2026-10-08 01:10,SHORT,83907.4,83500.3,1080,0.39,Timeout,1.432,-0.542,698,273,10.0,-0.532,-0.24,-0.5,15643.0,46.1,R1[83.9k-84.2k]
