@@ -2,10 +2,10 @@ SYMBOL = "BTCUSDT"
 LOG_FILE = "data/taurus_x_container.log"
 RESULTS_DIR = "results"
 RESULT_PREFIX = "short"
-STRATEGY_VERSION = "v7.6.ch.s1"
+STRATEGY_VERSION = "v7.9.ch.s1"
 
 TP_PCT = 1.5
-SL_PCT = 0.7
+SL_PCT = 1.5
 TIMEOUT_MINUTES = 1080
 TAKER_FEE = 0.05
 MAKER_FEE = 0.02
